@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#030508">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>蜘蛛作戰法 Spider Matrix 20×8</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config={darkMode:'class',theme:{extend:{colors:{cyber:{
+black:'#030508',card:'#0a0e17',border:'#1a2338',cyan:'#00f0ff',
+purple:'#7000ff',magenta:'#ff007f',red:'#ff2e63',green:'#00ff66'
+}},fontFamily:{mono:['Courier New','Consolas','monospace']}}}}
+</script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+*{box-sizing:border-box}
+body{
+ background:#030508 radial-gradient(circle at 50% 0%,rgba(112,0,255,.2),transparent 75%);
+ color:#e2e8f0;min-height:100vh;font-size:15px
+}
+input{min-width:0}
+input:focus{outline:1px solid #00f0ff}
+button:active{transform:scale(.97)}
+::-webkit-scrollbar{width:9px;height:9px}
+::-webkit-scrollbar-track{background:#030508}
+::-webkit-scrollbar-thumb{background:#1a2338;border-radius:5px}
+input[type=number]{appearance:textfield;-moz-appearance:textfield}
+input::-webkit-inner-spin-button,input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+
+.symbol-input{
+ width:100%;background:#030508;border:2px solid #00f0ff;
+ border-radius:8px;padding:10px 8px;color:#00f0ff;
+ text-align:center;font-weight:900;font-size:22px;text-transform:uppercase
+}
+.trade-table{min-width:1100px;width:100%;border-collapse:collapse}
+.trade-table th,.trade-table td{
+ border:1px solid rgba(26,35,56,.8);padding:8px 6px;text-align:center
+}
+.trade-table th{
+ background:#101827;color:#9ca3af;font-size:15.6px;
+ white-space:nowrap;font-weight:900
+}
+.trade-table td{font-size:18px;font-weight:700}
+.group-card{
+ background:rgba(10,14,23,.96);border:1px solid #1a2338;
+ border-radius:14px;overflow:hidden;box-shadow:0 8px 25px rgba(0,0,0,.3)
+}
+.group-head{
+ background:linear-gradient(110deg,rgba(0,240,255,.10),rgba(112,0,255,.12));
+ border-bottom:1px solid rgba(0,240,255,.35)
+}
+.trade-input{
+ width:100%;min-width:90px;background:#030508;border:1px solid #1a2338;
+ border-radius:6px;padding:10px 5px;color:white;text-align:center;
+ font-size:18px;font-weight:700
+}
+.trade-input:focus{border-color:#00f0ff}
+.lots-cell{width:65px;min-width:65px;max-width:65px}
+.lots-input{
+ width:55px!important;min-width:55px!important;max-width:55px!important;
+ padding-left:2px!important;padding-right:2px!important
+}
+.group-card .trade-table td{font-size:1.3em}
+.group-card .trade-table th{font-size:1.05em}
+.group-card .trade-input{font-size:1.15em}
+.stock-name{
+ font-size:24px;font-weight:900;color:#fff;
+ line-height:1.35;letter-spacing:.5px
+}
+.current-price{font-size:25px;font-weight:900;color:#00ff66}
+.group-total{
+ background:rgba(112,0,255,.12);
+ border-top:2px solid rgba(0,240,255,.5)
+}
+.profit-positive{color:#00ff66!important}
+.profit-negative{color:#ff2e63!important}
+.profit-zero{color:#cbd5e1!important}
+
+.float-positive{
+ background:rgba(0,255,102,.20)!important;color:#00ff66!important;
+ border:1px solid rgba(0,255,102,.65);border-radius:7px;padding:7px 3px;
+ box-shadow:0 0 9px rgba(0,255,102,.18)
+}
+.float-negative{
+ background:rgba(255,46,99,.22)!important;color:#ff6688!important;
+ border:1px solid rgba(255,46,99,.7);border-radius:7px;padding:7px 3px;
+ box-shadow:0 0 9px rgba(255,46,99,.18)
+}
+.float-zero{
+ background:rgba(148,163,184,.12)!important;color:#cbd5e1!important;
+ border:1px solid rgba(148,163,184,.3);border-radius:7px;padding:7px 3px
+}
+.small-label{font-size:12px;color:#94a3b8}
+.amount-buy{color:#ff2e63;font-weight:900}
+.amount-sell{color:#00ff66;font-weight:900}
+
+/* 金額字體：再縮小40%，由1.4em改為0.84em */
+.money-value{
+ font-size:.84em!important;
+ line-height:1.25;
+ font-weight:900!important;
+ white-space:nowrap
+}
+#overall-total{font-size:.84em!important}
+.group-total .money-value{font-size:.84em!important}
+.money-input{font-size:18px}
+
+/* 日期顯示字體 */
+.date-input{
+ min-width:105px!important;width:100%;
+ font-size:11.7px!important;font-weight:700;
+ letter-spacing:0;padding:10px 2px!important;color:#cbd5e1
+}
+
+/* 日期欄位及日曆按鈕 */
+.date-wrap{
+ display:flex;align-items:center;gap:2px;
+ min-width:125px;position:relative
+}
+.date-calendar{
+ flex:0 0 27px;width:27px;height:34px;
+ background:#14243a;color:#00f0ff;
+ border:1px solid #1a2338;border-radius:5px;
+ font-size:12px;display:flex;align-items:center;justify-content:center;
+ position:relative;z-index:1
+}
+
+/* 修正iPhone/iPad日期選擇器無法點擊
+   真正的日期輸入欄覆蓋在日曆按鈕上 */
+.hidden-date-picker{
+ position:absolute!important;
+ right:0!important;
+ top:0!important;
+ width:27px!important;
+ height:34px!important;
+ opacity:0!important;
+ z-index:5!important;
+ pointer-events:auto!important;
+ cursor:pointer!important;
+ margin:0!important;
+ padding:0!important;
+ border:0!important;
+ -webkit-appearance:none;
+ appearance:none
+}
+.date-heading{font-size:10px!important}
+
+@media(max-width:640px){
+ body{font-size:14px}
+ .group-card{border-radius:10px}
+ .stock-name{font-size:22px}
+ .trade-input{min-width:85px}
+ .lots-input{min-width:55px!important}
+ .date-input{font-size:11.7px!important}
+}
+</style>
+</head>
+
+<body class="font-mono flex flex-col min-h-screen pb-10">
+
+<header class="border-b border-cyber-border bg-cyber-card/95 sticky top-0 z-50 px-3 py-3">
+ <div class="max-w-[120rem] mx-auto flex flex-col md:flex-row justify-between items-center gap-3">
+  <div>
+   <h1 class="text-2xl sm:text-3xl font-black tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-cyber-cyan via-white to-cyber-magenta">蜘蛛作戰法</h1>
+   <p class="text-gray-400 text-xs mt-1">
+    SPIDER MATRIX 20 × 8 ・160 TRADE RECORDS ・<span id="last-update">--</span>
+   </p>
+  </div>
+  <div class="flex items-center gap-2 flex-wrap justify-center">
+   <div class="px-3 py-2 rounded-lg border border-cyber-border bg-cyber-black flex items-center gap-2">
+    <span id="dot" class="w-3 h-3 rounded-full bg-green-400"></span>
+    <span id="stext" class="text-green-400 font-bold text-xs">待命</span>
+   </div>
+   <button onclick="fetchAll()" class="px-3 py-2 font-bold rounded-xl border border-cyan-400 text-cyan-300 text-sm">
+    <i id="sync" class="fa-solid fa-arrows-rotate mr-1"></i>更新全部行情
+   </button>
+   <button onclick="setKey()" class="px-3 py-2 font-bold rounded-xl border border-purple-500 text-purple-300 text-sm">
+    <i class="fa-solid fa-key mr-1"></i>美股 Key
+   </button>
+   <button onclick="resetAll()" class="px-3 py-2 font-bold rounded-xl border border-red-500/50 text-red-400 text-sm">
+    <i class="fa-solid fa-trash-can mr-1"></i>全部重置
+   </button>
+  </div>
+ </div>
+</header>
+
+<main class="max-w-[120rem] mx-auto px-2 sm:px-4 py-4 w-full flex-grow">
+
+<section class="grid grid-cols-2 md:grid-cols-4 gap-2 mb-5">
+ <div class="bg-cyber-card border border-cyber-border rounded-xl p-3">
+  <div class="text-gray-400 text-xs">交易組數</div>
+  <div class="text-cyan-300 text-2xl font-black">20</div>
+ </div>
+ <div class="bg-cyber-card border border-cyber-border rounded-xl p-3">
+  <div class="text-gray-400 text-xs">每組交易筆數</div>
+  <div class="text-cyan-300 text-2xl font-black">8</div>
+ </div>
+ <div class="bg-cyber-card border border-cyber-border rounded-xl p-3">
+  <div class="text-gray-400 text-xs">全部交易紀錄</div>
+  <div class="text-cyan-300 text-2xl font-black">160</div>
+ </div>
+ <div class="bg-cyber-card border border-cyber-border rounded-xl p-3">
+  <div class="text-gray-400 text-xs">20組總盈虧</div>
+  <div id="overall-total" class="money-value text-gray-300">--</div>
+ </div>
+</section>
+
+<div class="flex items-center justify-between mb-3 px-1">
+ <h2 class="text-lg font-black text-cyan-300"><i class="fa-solid fa-spider mr-2"></i>20 組獨立交易區</h2>
+ <span class="text-gray-500 text-xs">每組 8 筆交易</span>
+</div>
+
+<div id="groups-container" class="grid grid-cols-1 xl:grid-cols-2 gap-4"></div>
+
+<section class="mt-6 p-5 rounded-2xl bg-cyber-card border border-cyber-border">
+ <h2 class="text-lg font-black text-cyan-300 mb-3"><i class="fa-solid fa-circle-info mr-2"></i>操作說明</h2>
+ <div class="text-gray-300 text-sm space-y-2">
+  <p>1. 每組最上方輸入自己的股票、ETF、美股或加密貨幣代號。</p>
+  <p>2. 日期格式為 YYYY/MM/DD，例如 2026/01/01，可按日曆圖示選取。</p>
+  <p>3. 每組有8筆獨立交易紀錄，買賣資料不會與其他組混合。</p>
+  <p>4. 買進金額＝買進價格 × 買進張數 × 1,000。</p>
+  <p>5. 賣出金額＝賣出價格 × 賣出張數 × 1,000。</p>
+  <p>6. 有賣出金額時顯示買賣盈虧小計，隱藏該筆浮動盈虧。</p>
+  <p>7. 尚未賣出的交易，浮動盈虧＝（目前價格－買進價格）×買進張數×1,000。</p>
+  <p>8. 獲利浮動盈虧綠色背景，虧損浮動盈虧紅色背景。</p>
+  <p>9. 點選輸入欄位會清空原內容；未輸入新內容離開時會恢復原內容。</p>
+  <p>10. 金額字體已再縮小40%，日期字體放大30%。</p>
+  <p>11. 所有資料自動儲存在本機，每60秒更新行情。</p>
+ </div>
+</section>
+</main>
+
+<footer class="text-center text-gray-600 text-xs mt-6">Spider Matrix 20 × 8 © 2026</footer>
+
+<script>
+'use strict';
+
+const KEY='SPIDER_MATRIX_V5_20X8';
+const GROUP_COUNT=20;
+const TRADE_COUNT=8;
+const DEFAULT_SYMBOLS=['2330','0050','00980A','AAPL','NVDA','TSLA','BTC','ETH'];
+const CRYPTO=['BTC','ETH','SOL','XRP','DOGE','BNB','ADA','AVAX','LINK','DOT','TRX','LTC','SUI','PEPE','TON','SHIB'];
+
+const blankTrade=()=>({date:'',price:'',lots:'',amount:''});
+const blankRecord=()=>({buy:blankTrade(),sell:blankTrade()});
+const blankGroup=i=>({
+ symbol:DEFAULT_SYMBOLS[i]||'',name:'',src:'',latestPrice:null,
+ trades:Array.from({length:TRADE_COUNT},blankRecord)
+});
+
+let groups=[];
+let requestVersion=Array(GROUP_COUNT).fill(0);
+
+function esc(s){
+ return String(s??'').replace(/[&<>"']/g,c=>({
+ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+ }[c]));
+}
+function isBlank(v){return v===''||v===null||v===undefined}
+function validPositive(v){
+ return !isBlank(v)&&Number.isFinite(Number(v))&&Number(v)>0;
+}
+function fmt(n){
+ if(!validPositive(n))return '--';
+ n=Number(n);
+ if(n>=1000)return n.toLocaleString('en-US',{maximumFractionDigits:0});
+ if(n>=100)return n.toFixed(1);
+ if(n>=10)return n.toFixed(2);
+ if(n>=1)return n.toFixed(3);
+ return Number(n.toPrecision(4)).toString();
+}
+function money(n){
+ return Number(n).toLocaleString('en-US',{maximumFractionDigits:2});
+}
+function signed(n){
+ n=Number(n);
+ const s=Math.abs(n).toLocaleString('en-US',{maximumFractionDigits:2});
+ return n>0?'+'+s:n<0?'-'+s:'0';
+}
+function profitClass(n){
+ return n>0?'profit-positive':n<0?'profit-negative':'profit-zero';
+}
+function status(type,msg){
+ const dot=document.getElementById('dot');
+ const text=document.getElementById('stext');
+ const colors={
+ RUN:['bg-cyan-400','text-cyan-300'],
+ OK:['bg-green-400','text-green-400'],
+ WARN:['bg-yellow-400','text-yellow-400'],
+ ERR:['bg-red-500','text-red-400']
+ };
+ const c=colors[type]||colors.OK;
+ dot.className='w-3 h-3 rounded-full '+c[0];
+ text.className=c[1]+' font-bold text-xs';
+ text.textContent=msg;
+}
+
+/* 點選輸入欄位：清空；沒有輸入則恢復 */
+function inputFocus(el){
+ if(el.dataset.editing==='1')return;
+ el.dataset.original=el.value;
+ el.dataset.editing='1';
+ el.value='';
+}
+function inputRestore(el){
+ if(el.dataset.editing!=='1')return false;
+ if(el.value.trim()===''){
+  el.value=el.dataset.original??'';
+  el.dataset.editing='0';
+  return true;
+ }
+ el.dataset.editing='0';
+ return false;
+}
+
+/* 日期格式 */
+function normalizeDate(value){
+ if(!value)return '';
+ const s=String(value).trim().replace(/[.-]/g,'/');
+ const m=s.match(/^(\d{4})\/(\d{1,2})\/(\d{1,2})$/);
+ if(!m)return s;
+ return `${m[1]}/${String(m[2]).padStart(2,'0')}/${String(m[3]).padStart(2,'0')}`;
+}
+function dateToISO(value){
+ const v=normalizeDate(value);
+ const m=v.match(/^(\d{4})\/(\d{2})\/(\d{2})$/);
+ return m?`${m[1]}-${m[2]}-${m[3]}`:'';
+}
+function isoToDate(value){
+ if(!value)return '';
+ const m=value.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+ return m?`${m[1]}/${m[2]}/${m[3]}`:'';
+}
+
+function dateInput(i,row,type,value){
+ const id=`date-picker-${i}-${row}-${type}`;
+ return `
+ <div class="date-wrap">
+  <input id="date-text-${i}-${row}-${type}"
+   class="trade-input date-input"
+   type="text" inputmode="numeric"
+   placeholder="YYYY/MM/DD"
+   value="${esc(value)}"
+   onfocus="inputFocus(this)"
+   onblur="dateBlur(${i},${row},'${type}',this)">
+  <button type="button" class="date-calendar" aria-label="選擇日期">
+   <i class="fa-solid fa-calendar-days"></i>
+  </button>
+  <input id="${id}" class="hidden-date-picker"
+   type="date" value="${dateToISO(value)}"
+   onchange="datePicked(${i},${row},'${type}',this.value)">
+ </div>`;
+}
+
+/* 日曆按鈕及透明日期欄位均可觸發日期選擇 */
+function openDatePicker(id){
+ const picker=document.getElementById(id);
+ if(!picker)return;
+ try{
+  if(typeof picker.showPicker==='function')picker.showPicker();
+  else picker.click();
+ }catch(e){
+  picker.click();
+ }
+}
+document.addEventListener('click',function(e){
+ const button=e.target.closest('.date-calendar');
+ if(!button)return;
+ const wrap=button.closest('.date-wrap');
+ const picker=wrap?.querySelector('.hidden-date-picker');
+ if(picker)openDatePicker(picker.id);
+});
+
+function datePicked(i,row,type,value){
+ const formatted=isoToDate(value);
+ const visible=document.getElementById(`date-text-${i}-${row}-${type}`);
+ if(visible){
+  visible.value=formatted;
+  visible.dataset.editing='0';
+ }
+ onTrade(i,row,type,'date',formatted);
+}
+function dateBlur(i,row,type,el){
+ if(inputRestore(el)){
+  onTrade(i,row,type,'date',el.value);
+  return;
+ }
+ const value=normalizeDate(el.value);
+ el.value=value;
+ const picker=document.getElementById(`date-picker-${i}-${row}-${type}`);
+ if(picker)picker.value=dateToISO(value);
+ onTrade(i,row,type,'date',value);
+}
+
+/* 資料載入及儲存 */
+function normalizeTrade(t){
+ t=t&&typeof t==='object'?t:{};
+ return {
+  date:normalizeDate(t.date??''),
+  price:t.price??'',
+  lots:t.lots??'',
+  amount:t.amount??''
+ };
+}
+function normalizeRecord(r){
+ r=r&&typeof r==='object'?r:{};
+ return {buy:normalizeTrade(r.buy),sell:normalizeTrade(r.sell)};
+}
+function save(){
+ try{localStorage.setItem(KEY,JSON.stringify(groups))}
+ catch(e){console.error('儲存失敗',e);status('ERR','儲存空間不足')}
+}
+function load(){
+ let saved=null;
+ try{saved=JSON.parse(localStorage.getItem(KEY)||'null')}catch(e){}
+ if(!Array.isArray(saved)){
+  groups=Array.from({length:GROUP_COUNT},(_,i)=>blankGroup(i));
+  save();return;
+ }
+ groups=Array.from({length:GROUP_COUNT},(_,i)=>{
+  const s=saved[i]||blankGroup(i);
+  const trades=Array.isArray(s.trades)?s.trades:[];
+  return {
+   symbol:s.symbol||'',name:s.name||'',src:s.src||'',
+   latestPrice:validPositive(s.latestPrice)?Number(s.latestPrice):null,
+   trades:Array.from({length:TRADE_COUNT},(_,j)=>normalizeRecord(trades[j]))
+  };
+ });
+}
+function resetAll(){
+ if(!confirm('確定清除全部20組、160筆交易資料及代號嗎？此動作無法復原。'))return;
+ requestVersion=requestVersion.map(v=>v+1);
+ groups=Array.from({length:GROUP_COUNT},(_,i)=>blankGroup(i));
+ save();render();fetchAll();
+}
+
+/* 盈虧計算 */
+function calcAmount(record,type){
+ const t=record[type],p=Number(t.price),lots=Number(t.lots);
+ if(isBlank(t.price)||isBlank(t.lots)||!Number.isFinite(p)||
+ !Number.isFinite(lots)||p<=0||lots<=0)return null;
+ const total=Math.round(p*lots*1000*100)/100;
+ return type==='buy'?-total:total;
+}
+function calcRealized(record){
+ const buy=calcAmount(record,'buy');
+ const sell=calcAmount(record,'sell');
+ if(sell===null)return {hasData:false,total:0};
+ return {hasData:true,total:Math.round((sell+(buy||0))*100)/100};
+}
+function calcFloating(record,current){
+ const buy=record.buy,p=Number(buy.price),lots=Number(buy.lots),cp=Number(current);
+ if(isBlank(buy.price)||isBlank(buy.lots)||!Number.isFinite(p)||
+ !Number.isFinite(lots)||p<=0||lots<=0||!validPositive(current)){
+  return {hasData:false,total:0};
+ }
+ return {hasData:true,total:Math.round((cp-p)*lots*1000*100)/100};
+}
+function calcRecord(record,current){
+ const realized=calcRealized(record);
+ if(realized.hasData)return {type:'realized',hasData:true,total:realized.total};
+ const floating=calcFloating(record,current);
+ return {type:'floating',hasData:floating.hasData,total:floating.total};
+}
+function calcGroup(group){
+ let total=0,hasData=false;
+ group.trades.forEach(record=>{
+  const r=calcRecord(record,group.latestPrice);
+  if(r.hasData){total+=r.total;hasData=true}
+ });
+ return {total:Math.round(total*100)/100,hasData};
+}
+function calcOverall(){
+ let total=0,hasData=false;
+ groups.forEach(g=>{
+  const r=calcGroup(g);
+  if(r.hasData){total+=r.total;hasData=true}
+ });
+ return {total:Math.round(total*100)/100,hasData};
+}
+
+/* 行情查詢 */
+const PROXIES=[
+ u=>u,
+ u=>'https://api.allorigins.win/raw?url='+encodeURIComponent(u),
+ u=>'https://corsproxy.io/?'+encodeURIComponent(u),
+ u=>'https://api.codetabs.com/v1/proxy?quest='+encodeURIComponent(u),
+ u=>'https://r.jina.ai/'+u
+];
+async function fetchJSON(url){
+ for(const proxy of PROXIES){
+  const controller=new AbortController();
+  const timer=setTimeout(()=>controller.abort(),8000);
+  try{
+   const response=await fetch(proxy(url),{signal:controller.signal,cache:'no-store'});
+   if(response.ok){
+    const text=await response.text();
+    try{clearTimeout(timer);return JSON.parse(text)}catch(e){
+     const a=text.search(/[\[{]/),b=Math.max(text.lastIndexOf('}'),text.lastIndexOf(']'));
+     if(a>=0&&b>a){
+      try{clearTimeout(timer);return JSON.parse(text.slice(a,b+1))}catch(e2){}
+     }
+    }
+   }
+  }catch(e){}
+  clearTimeout(timer);
+ }
+ return null;
+}
+async function yahoo(sym){
+ for(const host of ['query1','query2']){
+  const data=await fetchJSON(
+   `https://${host}.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(sym)}?interval=1d&range=1d`
+  );
+  const meta=data?.chart?.result?.[0]?.meta;
+  if(meta&&Number(meta.regularMarketPrice)>0){
+   return {
+    name:meta.shortName||meta.longName||meta.symbol,
+    price:Number(meta.regularMarketPrice),src:'Yahoo Finance'
+   };
+  }
+ }
+ return null;
+}
+let twseCache=null,tpexCache=null;
+async function getTWSE(){
+ if(!twseCache)twseCache=fetchJSON('https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL');
+ return twseCache;
+}
+async function getTPEX(){
+ if(!tpexCache)tpexCache=fetchJSON('https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_close_quotes');
+ return tpexCache;
+}
+function parseNum(v){return parseFloat(String(v??'').replace(/,/g,''))}
+async function openAPI(code){
+ const twse=await getTWSE();
+ if(Array.isArray(twse)){
+  const row=twse.find(x=>x.Code===code);
+  if(row){
+   const p=parseNum(row.ClosingPrice);
+   if(p>0)return {name:row.Name||code,price:p,src:'TWSE 收盤'};
+  }
+ }
+ const tpex=await getTPEX();
+ if(Array.isArray(tpex)){
+  const row=tpex.find(x=>(x.SecuritiesCompanyCode||x.Code)===code);
+  if(row){
+   const p=parseNum(row.Close);
+   if(p>0)return {name:row.CompanyName||row.Name||code,price:p,src:'TPEx 收盤'};
+  }
+ }
+ return null;
+}
+async function finmind(code){
+ const start=new Date(Date.now()-20*86400000).toISOString().slice(0,10);
+ try{
+  const response=await fetch(
+   `https://api.finmindtrade.com/api/v4/data?dataset=TaiwanStockPrice&data_id=${encodeURIComponent(code)}&start_date=${start}`
+  );
+  if(!response.ok)return null;
+  const json=await response.json(),rows=json?.data||[],last=rows[rows.length-1];
+  if(!last||!(Number(last.close)>0))return null;
+  let name=code;
+  try{
+   const info=await fetch(`https://api.finmindtrade.com/api/v4/data?dataset=TaiwanStockInfo&data_id=${encodeURIComponent(code)}`);
+   const j=await info.json();name=j?.data?.[0]?.stock_name||code;
+  }catch(e){}
+  return {name,price:Number(last.close),src:'FinMind '+last.date};
+ }catch(e){return null}
+}
+async function twStock(code){
+ const f=await finmind(code);
+ if(f)return f;
+ const open=await openAPI(code);
+ for(const suffix of ['.TW','.TWO']){
+  const y=await yahoo(code+suffix);
+  if(y)return {name:open?.name||y.name,price:y.price,src:'Yahoo Finance'};
+ }
+ return open;
+}
+async function cryptoPrice(symbol){
+ const base=symbol.replace(/(USDT|-USD)$/,'');
+ for(const host of ['api.binance.com','data-api.binance.vision']){
+  try{
+   const response=await fetch(`https://${host}/api/v3/ticker/price?symbol=${base}USDT`);
+   if(response.ok){
+    const data=await response.json(),p=Number(data.price);
+    if(p>0)return {name:base+'/USDT',price:p,src:'Binance'};
+   }
+  }catch(e){}
+ }
+ const y=await yahoo(base+'-USD');
+ return y?{...y,src:'Yahoo Finance'}:null;
+}
+async function getPrice(raw){
+ const symbol=String(raw||'').trim().toUpperCase();
+ if(!symbol)return null;
+ if(/^\d{4,6}[A-Z]?$/.test(symbol))return twStock(symbol);
+ if(CRYPTO.includes(symbol)||/USDT$|-USD$/.test(symbol))return cryptoPrice(symbol);
+ const key=localStorage.getItem('TD_KEY');
+ if(key){
+  try{
+   const response=await fetch(
+    `https://api.twelvedata.com/price?symbol=${encodeURIComponent(symbol)}&apikey=${encodeURIComponent(key)}`
+   );
+   const data=await response.json(),price=Number(data.price);
+   if(price>0)return {name:symbol,price,src:'Twelve Data'};
+  }catch(e){}
+ }
+ const y=await yahoo(symbol);
+ return y?{...y,src:'Yahoo Finance'}:null;
+}
+
+/* API Key */
+function setKey(){
+ const value=prompt('輸入 Twelve Data API Key（美股行情使用）。留空可清除：',localStorage.getItem('TD_KEY')||'');
+ if(value===null)return;
+ if(value.trim())localStorage.setItem('TD_KEY',value.trim());
+ else localStorage.removeItem('TD_KEY');
+ fetchAll();
+}
+
+/* 行情更新 */
+function applyPrice(i,result){
+ groups[i].latestPrice=Number(result.price);
+ groups[i].name=result.name||groups[i].name;
+ groups[i].src=result.src||'';
+}
+async function refreshOne(i){
+ const symbol=groups[i].symbol;
+ if(!symbol)return;
+ const version=++requestVersion[i];
+ status('RUN','更新第'+(i+1)+'組 '+symbol);
+ const result=await getPrice(symbol);
+ if(version!==requestVersion[i]||groups[i].symbol!==symbol)return;
+ if(result&&validPositive(result.price)){
+  applyPrice(i,result);
+  status('OK','第'+(i+1)+'組 '+symbol+' 更新成功');
+ }else status('WARN','第'+(i+1)+'組 '+symbol+' 查價失敗');
+ save();render();
+}
+async function fetchAll(){
+ requestVersion=requestVersion.map(v=>v+1);
+ const versions=requestVersion.slice();
+ document.getElementById('sync').classList.add('fa-spin');
+ status('RUN','正在更新行情…');
+ twseCache=null;tpexCache=null;
+ let success=0,failed=[];
+ await Promise.all(groups.map(async(g,i)=>{
+  const symbol=g.symbol;
+  if(!symbol)return;
+  const result=await getPrice(symbol);
+  if(versions[i]!==requestVersion[i]||groups[i].symbol!==symbol)return;
+  if(result&&validPositive(result.price)){
+   applyPrice(i,result);success++;
+  }else failed.push('第'+(i+1)+'組 '+symbol);
+ }));
+ save();render();
+ document.getElementById('sync').classList.remove('fa-spin');
+ const time=new Date().toLocaleTimeString('zh-TW',{hour12:false});
+ document.getElementById('last-update').textContent='更新 '+time;
+ if(failed.length)status(success?'WARN':'ERR',success+' 組成功，'+failed.length+' 組失敗');
+ else status('OK','行情更新 '+time);
+}
+async function onSymbol(i,value){
+ const symbol=String(value||'').trim().toUpperCase().replace(/[^A-Z0-9.\-]/g,'');
+ const input=document.getElementById('symbol-'+i);
+ if(!symbol&&input&&input.dataset.original){
+  input.value=input.dataset.original;
+  input.dataset.editing='0';
+  return;
+ }
+ if(input)input.dataset.editing='0';
+ const version=++requestVersion[i];
+ groups[i].symbol=symbol;
+ groups[i].name='';groups[i].src='';groups[i].latestPrice=null;
+ save();updateGroupHeader(i);
+ if(!symbol){render();return}
+ status('RUN','查詢第'+(i+1)+'組 '+symbol);
+ const result=await getPrice(symbol);
+ if(version!==requestVersion[i]||groups[i].symbol!==symbol)return;
+ if(result&&validPositive(result.price)){
+  applyPrice(i,result);status('OK','第'+(i+1)+'組行情已取得');
+ }else status('WARN','查不到 '+symbol+'，可稍後重試');
+ save();render();
+}
+
+/* 交易資料 */
+function onTrade(i,row,type,field,value){
+ const record=groups[i].trades[row];
+ record[type][field]=value;
+ if(field==='price'||field==='lots'){
+  const amount=calcAmount(record,type);
+  record[type].amount=amount===null?'':String(Math.abs(amount));
+ }
+ save();
+ updateTradeRow(i,row);
+ updateGroupTotal(i);
+ updateOverall();
+}
+function updateTradeRow(i,row){
+ const group=groups[i],record=group.trades[row];
+ ['buy','sell'].forEach(type=>{
+  const amount=calcAmount(record,type);
+  const el=document.getElementById(`${type}-amount-${i}-${row}`);
+  if(el)el.textContent=amount===null?'--':money(Math.abs(amount));
+ });
+ const result=calcRecord(record,group.latestPrice);
+ const floating=document.getElementById(`floating-${i}-${row}`);
+ const subtotal=document.getElementById(`subtotal-${i}-${row}`);
+ if(floating){
+  floating.textContent=result.type==='floating'&&result.hasData?signed(result.total):'';
+  floating.className='money-value '+(
+   result.type==='floating'&&result.hasData
+   ?result.total>0?'float-positive':result.total<0?'float-negative':'float-zero'
+   :'text-gray-500'
+  );
+ }
+ if(subtotal){
+  const realized=calcRealized(record);
+  subtotal.textContent=realized.hasData?signed(realized.total):'';
+  subtotal.className='money-value '+(
+   realized.hasData?profitClass(realized.total):'text-gray-500'
+  );
+ }
+}
+function updateGroupTotal(i){
+ const el=document.getElementById('group-total-'+i);
+ if(!el)return;
+ const result=calcGroup(groups[i]);
+ el.textContent=result.hasData?signed(result.total):'--';
+ el.className='money-value '+profitClass(result.total);
+}
+function updateOverall(){
+ const result=calcOverall(),el=document.getElementById('overall-total');
+ el.textContent=result.hasData?signed(result.total):'--';
+ el.className='money-value '+profitClass(result.total);
+}
+
+/* 輸入欄位 */
+function tradeInput(i,row,type,field,value,placeholder){
+ if(field==='date')return dateInput(i,row,type,value);
+ return `
+ <input class="trade-input ${field==='lots'?'lots-input':''}"
+  type="number" step="any"
+  value="${esc(value)}" placeholder="${placeholder||''}"
+  onfocus="inputFocus(this)"
+  onblur="tradeBlur(${i},${row},'${type}','${field}',this)"
+  oninput="onTrade(${i},${row},'${type}','${field}',this.value)">
+ `;
+}
+function tradeBlur(i,row,type,field,el){
+ if(inputRestore(el))onTrade(i,row,type,field,el.value);
+}
+
+/* 畫面 */
+function renderGroup(i){
+ const g=groups[i];
+ let html=`
+ <section class="group-card" id="group-card-${i}">
+  <div class="group-head p-3">
+   <div class="flex items-center justify-between mb-2">
+    <div class="text-cyan-300 font-black text-lg">
+     <i class="fa-solid fa-spider mr-2"></i>第 ${i+1} 組
+    </div>
+    <div class="text-xs text-gray-400">8 筆交易紀錄</div>
+   </div>
+   <div class="grid grid-cols-12 gap-2 items-center">
+    <div class="col-span-7">
+     <div class="small-label mb-1">本組股票／幣種代號</div>
+     <input id="symbol-${i}" class="symbol-input"
+      value="${esc(g.symbol)}" placeholder="輸入代號"
+      onfocus="inputFocus(this)"
+      onblur="symbolBlur(${i},this)"
+      onchange="onSymbol(${i},this.value)"
+      onkeydown="if(event.key==='Enter')this.blur()">
+    </div>
+    <div class="col-span-5">
+     <div class="small-label mb-1">目前價格</div>
+     <div id="price-${i}" class="current-price text-center py-2">${fmt(g.latestPrice)}</div>
+    </div>
+   </div>
+   <div class="mt-2">
+    <div id="name-${i}" class="stock-name truncate">${esc(g.name||'尚未取得名稱')}</div>
+    <div class="flex items-center justify-between gap-2 mt-1">
+     <div id="source-${i}" class="text-xs text-gray-500 truncate">${esc(g.src)}</div>
+     <button onclick="refreshOne(${i})"
+      class="shrink-0 px-3 py-2 rounded-lg border border-cyan-400 text-cyan-300 text-xs font-bold">
+      <i class="fa-solid fa-rotate-right mr-1"></i>更新本組
+     </button>
+    </div>
+   </div>
+  </div>
+  <div class="overflow-x-auto">
+   <table class="trade-table">
+    <thead><tr>
+     <th>交易</th><th class="date-heading">買進日期</th>
+     <th>買進價格</th><th class="lots-cell">買進張數</th>
+     <th>買進金額</th><th class="date-heading">賣出日期</th>
+     <th>賣出價格</th><th class="lots-cell">賣出張數</th>
+     <th>賣出金額</th><th>浮動盈虧</th><th>買賣小計</th>
+    </tr></thead>
+    <tbody>`;
+ for(let row=0;row<TRADE_COUNT;row++){
+  const record=g.trades[row];
+  const buyAmount=calcAmount(record,'buy');
+  const sellAmount=calcAmount(record,'sell');
+  const result=calcRecord(record,g.latestPrice);
+  const realized=calcRealized(record);
+  const floatClass=result.hasData&&result.type==='floating'
+   ?result.total>0?'float-positive':result.total<0?'float-negative':'float-zero'
+   :'text-gray-500';
+
+  html+=`
+   <tr>
+    <td class="text-cyan-300 font-black whitespace-nowrap">#${row+1}</td>
+    <td>${tradeInput(i,row,'buy','date',record.buy.date)}</td>
+    <td>${tradeInput(i,row,'buy','price',record.buy.price,'買進價')}</td>
+    <td class="lots-cell">${tradeInput(i,row,'buy','lots',record.buy.lots,'張數')}</td>
+    <td><div id="buy-amount-${i}-${row}" class="amount-buy money-value">
+     ${buyAmount===null?'--':money(Math.abs(buyAmount))}
+    </div></td>
+    <td>${tradeInput(i,row,'sell','date',record.sell.date)}</td>
+    <td>${tradeInput(i,row,'sell','price',record.sell.price,'賣出價')}</td>
+    <td class="lots-cell">${tradeInput(i,row,'sell','lots',record.sell.lots,'張數')}</td>
+    <td><div id="sell-amount-${i}-${row}" class="amount-sell money-value">
+     ${sellAmount===null?'--':money(Math.abs(sellAmount))}
+    </div></td>
+    <td><div id="floating-${i}-${row}" class="money-value ${floatClass}">
+     ${result.type==='floating'&&result.hasData?signed(result.total):''}
+    </div></td>
+    <td><div id="subtotal-${i}-${row}" class="money-value ${
+     realized.hasData?profitClass(realized.total):'text-gray-500'
+    }">${realized.hasData?signed(realized.total):''}</div></td>
+   </tr>`;
+ }
+ const total=calcGroup(g);
+ html+=`
+    </tbody>
+   </table>
+  </div>
+  <div class="group-total p-3 flex items-center justify-between">
+   <div>
+    <div class="text-cyan-300 font-bold text-sm">第 ${i+1} 組總盈虧</div>
+    <div class="text-gray-500 text-xs mt-1">8筆交易合計</div>
+   </div>
+   <div id="group-total-${i}" class="money-value ${profitClass(total.total)}">
+    ${total.hasData?signed(total.total):'--'}
+   </div>
+  </div>
+ </section>`;
+ return html;
+}
+function symbolBlur(i,el){
+ if(inputRestore(el))return;
+}
+function updateGroupHeader(i){
+ const g=groups[i];
+ const price=document.getElementById('price-'+i);
+ const name=document.getElementById('name-'+i);
+ const source=document.getElementById('source-'+i);
+ if(price)price.textContent=fmt(g.latestPrice);
+ if(name)name.textContent=g.name||'尚未取得名稱';
+ if(source)source.textContent=g.src||'';
+}
+function render(){
+ document.getElementById('groups-container').innerHTML=
+  groups.map((g,i)=>renderGroup(i)).join('');
+ updateOverall();
+}
+
+/* 啟動 */
+window.onload=()=>{
+ load();
+ render();
+ fetchAll();
+ setInterval(fetchAll,60000);
+};
+</script>
+</body>
+</html>
