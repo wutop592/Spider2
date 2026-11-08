@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="zh-TW" class="dark">
 <head>
@@ -98,15 +99,15 @@ input::-webkit-inner-spin-button,input::-webkit-outer-spin-button{-webkit-appear
 .amount-buy{color:#ff2e63;font-weight:900}
 .amount-sell{color:#00ff66;font-weight:900}
 
-/* 金額字體：再縮小40%，由1.4em改為0.84em */
+/* 所有金額字體放大1.5倍：0.84em × 1.5 = 1.26em */
 .money-value{
- font-size:.84em!important;
+ font-size:1.26em!important;
  line-height:1.25;
  font-weight:900!important;
  white-space:nowrap
 }
-#overall-total{font-size:.84em!important}
-.group-total .money-value{font-size:.84em!important}
+#overall-total{font-size:1.26em!important}
+.group-total .money-value{font-size:1.26em!important}
 .money-input{font-size:18px}
 
 /* 日期顯示字體 */
@@ -129,8 +130,7 @@ input::-webkit-inner-spin-button,input::-webkit-outer-spin-button{-webkit-appear
  position:relative;z-index:1
 }
 
-/* 修正iPhone/iPad日期選擇器無法點擊
-   真正的日期輸入欄覆蓋在日曆按鈕上 */
+/* iPad 日期選擇器 */
 .hidden-date-picker{
  position:absolute!important;
  right:0!important;
@@ -228,7 +228,7 @@ input::-webkit-inner-spin-button,input::-webkit-outer-spin-button{-webkit-appear
   <p>7. 尚未賣出的交易，浮動盈虧＝（目前價格－買進價格）×買進張數×1,000。</p>
   <p>8. 獲利浮動盈虧綠色背景，虧損浮動盈虧紅色背景。</p>
   <p>9. 點選輸入欄位會清空原內容；未輸入新內容離開時會恢復原內容。</p>
-  <p>10. 金額字體已再縮小40%，日期字體放大30%。</p>
+  <p>10. 總盈虧金額字體放大1.5倍，日期字體維持原設定。</p>
   <p>11. 所有資料自動儲存在本機，每60秒更新行情。</p>
  </div>
 </section>
@@ -883,3 +883,4 @@ window.onload=()=>{
 </script>
 </body>
 </html>
+
