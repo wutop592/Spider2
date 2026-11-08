@@ -60,6 +60,18 @@ input::-webkit-inner-spin-button,input::-webkit-outer-spin-button{-webkit-appear
  font-size:18px;font-weight:700
 }
 .trade-input:focus{border-color:#00f0ff}
+
+/* 買進、賣出價格輸入格左右縮小約10% */
+.group-card .trade-input.price-input{
+ width:90%;
+ min-width:81px;
+ margin-left:auto;
+ margin-right:auto;
+ padding-left:2px;
+ padding-right:2px;
+ display:block
+}
+
 .lots-cell{width:65px;min-width:65px;max-width:65px}
 .lots-input{
  width:55px!important;min-width:55px!important;max-width:55px!important;
@@ -73,10 +85,29 @@ input::-webkit-inner-spin-button,input::-webkit-outer-spin-button{-webkit-appear
  line-height:1.35;letter-spacing:.5px
 }
 .current-price{font-size:25px;font-weight:900;color:#00ff66}
+
+/* 每組總盈虧區 */
 .group-total{
  background:rgba(112,0,255,.12);
- border-top:2px solid rgba(0,240,255,.5)
+ border-top:2px solid rgba(0,240,255,.5);
+ position:relative;
+ min-height:76px;
+ display:flex;
+ align-items:center
 }
+
+/* 每組總盈虧金額絕對置中 */
+.group-total .money-value{
+ position:absolute;
+ left:50%;
+ top:50%;
+ transform:translate(-50%,-50%);
+ text-align:center;
+ max-width:48%;
+ overflow:hidden;
+ text-overflow:ellipsis
+}
+
 .profit-positive{color:#00ff66!important}
 .profit-negative{color:#ff2e63!important}
 .profit-zero{color:#cbd5e1!important}
@@ -99,15 +130,15 @@ input::-webkit-inner-spin-button,input::-webkit-outer-spin-button{-webkit-appear
 .amount-buy{color:#ff2e63;font-weight:900}
 .amount-sell{color:#00ff66;font-weight:900}
 
-/* 所有金額字體放大1.5倍：0.84em × 1.5 = 1.26em */
+/* 所有金額字體：原1.26em，再增加0.3em，變成1.56em */
 .money-value{
- font-size:1.26em!important;
+ font-size:1.56em!important;
  line-height:1.25;
  font-weight:900!important;
  white-space:nowrap
 }
-#overall-total{font-size:1.26em!important}
-.group-total .money-value{font-size:1.26em!important}
+#overall-total{font-size:1.56em!important}
+.group-total .money-value{font-size:1.56em!important}
 .money-input{font-size:18px}
 
 /* 日期顯示字體 */
@@ -130,7 +161,7 @@ input::-webkit-inner-spin-button,input::-webkit-outer-spin-button{-webkit-appear
  position:relative;z-index:1
 }
 
-/* iPad 日期選擇器 */
+/* iPad日期選擇器 */
 .hidden-date-picker{
  position:absolute!important;
  right:0!important;
@@ -154,6 +185,10 @@ input::-webkit-inner-spin-button,input::-webkit-outer-spin-button{-webkit-appear
  .group-card{border-radius:10px}
  .stock-name{font-size:22px}
  .trade-input{min-width:85px}
+ .group-card .trade-input.price-input{
+  min-width:81px!important;
+  width:90%!important
+ }
  .lots-input{min-width:55px!important}
  .date-input{font-size:11.7px!important}
 }
@@ -228,7 +263,7 @@ input::-webkit-inner-spin-button,input::-webkit-outer-spin-button{-webkit-appear
   <p>7. 尚未賣出的交易，浮動盈虧＝（目前價格－買進價格）×買進張數×1,000。</p>
   <p>8. 獲利浮動盈虧綠色背景，虧損浮動盈虧紅色背景。</p>
   <p>9. 點選輸入欄位會清空原內容；未輸入新內容離開時會恢復原內容。</p>
-  <p>10. 總盈虧金額字體放大1.5倍，日期字體維持原設定。</p>
+  <p>10. 金額字體1.56em，每組總盈虧置中，買進及賣出價格欄位縮小約10%。</p>
   <p>11. 所有資料自動儲存在本機，每60秒更新行情。</p>
  </div>
 </section>
@@ -745,7 +780,7 @@ function updateOverall(){
 function tradeInput(i,row,type,field,value,placeholder){
  if(field==='date')return dateInput(i,row,type,value);
  return `
- <input class="trade-input ${field==='lots'?'lots-input':''}"
+ <input class="trade-input ${field==='lots'?'lots-input':''} ${field==='price'?'price-input':''}"
   type="number" step="any"
   value="${esc(value)}" placeholder="${placeholder||''}"
   onfocus="inputFocus(this)"
@@ -883,4 +918,3 @@ window.onload=()=>{
 </script>
 </body>
 </html>
-
