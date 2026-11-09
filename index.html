@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="zh-TW" class="dark">
 <head>
@@ -61,17 +60,10 @@ input::-webkit-inner-spin-button,input::-webkit-outer-spin-button{-webkit-appear
 }
 .trade-input:focus{border-color:#00f0ff}
 
-/* 買進、賣出價格輸入格左右縮小約10% */
 .group-card .trade-input.price-input{
- width:90%;
- min-width:81px;
- margin-left:auto;
- margin-right:auto;
- padding-left:2px;
- padding-right:2px;
- display:block
+ width:90%;min-width:81px;margin-left:auto;margin-right:auto;
+ padding-left:2px;padding-right:2px;display:block
 }
-
 .lots-cell{width:65px;min-width:65px;max-width:65px}
 .lots-input{
  width:55px!important;min-width:55px!important;max-width:55px!important;
@@ -86,26 +78,17 @@ input::-webkit-inner-spin-button,input::-webkit-outer-spin-button{-webkit-appear
 }
 .current-price{font-size:25px;font-weight:900;color:#00ff66}
 
-/* 每組總盈虧區 */
 .group-total{
  background:rgba(112,0,255,.12);
  border-top:2px solid rgba(0,240,255,.5);
- position:relative;
- min-height:76px;
- display:flex;
- align-items:center
+ position:relative;min-height:76px;
+ display:flex;align-items:center
 }
-
-/* 每組總盈虧金額絕對置中 */
 .group-total .money-value{
- position:absolute;
- left:50%;
- top:50%;
+ position:absolute;left:50%;top:50%;
  transform:translate(-50%,-50%);
- text-align:center;
- max-width:48%;
- overflow:hidden;
- text-overflow:ellipsis
+ text-align:center;max-width:48%;
+ overflow:hidden;text-overflow:ellipsis
 }
 
 .profit-positive{color:#00ff66!important}
@@ -130,55 +113,105 @@ input::-webkit-inner-spin-button,input::-webkit-outer-spin-button{-webkit-appear
 .amount-buy{color:#ff2e63;font-weight:900}
 .amount-sell{color:#00ff66;font-weight:900}
 
-/* 所有金額字體：原1.26em，再增加0.3em，變成1.56em */
 .money-value{
  font-size:1.56em!important;
- line-height:1.25;
- font-weight:900!important;
- white-space:nowrap
+ line-height:1.25;font-weight:900!important;white-space:nowrap
 }
-#overall-total{font-size:1.56em!important}
+#overall-floating,#overall-realized{font-size:1.56em!important}
 .group-total .money-value{font-size:1.56em!important}
 .money-input{font-size:18px}
 
-/* 日期顯示字體 */
-.date-input{
- min-width:105px!important;width:100%;
- font-size:11.7px!important;font-weight:700;
- letter-spacing:0;padding:10px 2px!important;color:#cbd5e1
+.summary-card{
+ min-height:112px;display:flex;flex-direction:column;
+ justify-content:center;align-items:center;text-align:center;
+ overflow:hidden
+}
+.summary-title{
+ font-size:15px;font-weight:900;color:#94a3b8;margin-bottom:10px
+}
+.summary-number{
+ font-size:clamp(22px,3.5vw,34px);
+ font-weight:900;line-height:1.25;
+ overflow-wrap:anywhere
 }
 
-/* 日期欄位及日曆按鈕 */
+/* 日期欄位縮小 */
+.date-input{
+ min-width:95px!important;width:100%;
+ font-size:11.7px!important;font-weight:700;
+ letter-spacing:0;padding:10px 0.1em!important;color:#cbd5e1
+}
 .date-wrap{
  display:flex;align-items:center;gap:2px;
- min-width:125px;position:relative
+ min-width:115px;width:115px;position:relative;
+ justify-content:center;margin-left:auto;margin-right:auto
 }
 .date-calendar{
- flex:0 0 27px;width:27px;height:34px;
+ flex:0 0 25px;width:25px;height:34px;
  background:#14243a;color:#00f0ff;
  border:1px solid #1a2338;border-radius:5px;
  font-size:12px;display:flex;align-items:center;justify-content:center;
  position:relative;z-index:1
 }
-
-/* iPad日期選擇器 */
 .hidden-date-picker{
- position:absolute!important;
- right:0!important;
- top:0!important;
- width:27px!important;
- height:34px!important;
- opacity:0!important;
- z-index:5!important;
- pointer-events:auto!important;
- cursor:pointer!important;
- margin:0!important;
- padding:0!important;
- border:0!important;
- -webkit-appearance:none;
- appearance:none
+ position:absolute!important;right:0!important;top:0!important;
+ width:25px!important;height:34px!important;
+ opacity:0!important;z-index:5!important;
+ pointer-events:auto!important;cursor:pointer!important;
+ margin:0!important;padding:0!important;border:0!important;
+ -webkit-appearance:none;appearance:none
 }
 .date-heading{font-size:10px!important}
+
+/* 每組內容置中 */
+.group-card,
+.group-card .group-head,
+.group-card .group-head > div,
+.group-card .small-label,
+.group-card .current-price,
+.group-card .trade-table th,
+.group-card .trade-table td,
+.group-card .group-total,
+.group-card .group-total > div{
+ text-align:center!important
+}
+.group-card input{text-align:center!important}
+
+/* 股票名稱靠左 */
+.group-card .stock-name{text-align:left!important}
+
+/* 標題、行情來源、更新按鈕排列 */
+.group-title-row{
+ display:flex;align-items:center;justify-content:space-between;
+ gap:8px;width:100%;flex-wrap:nowrap
+}
+.group-title{
+ text-align:left!important;flex:0 0 auto;min-width:0;
+ white-space:nowrap
+}
+.group-source{
+ flex:1 1 auto;min-width:0;
+ color:#94a3b8;font-size:11px;text-align:right!important;
+ white-space:nowrap;overflow:hidden;text-overflow:ellipsis
+}
+.group-refresh{
+ flex:0 0 auto;white-space:nowrap
+}
+
+/* 每筆金額及盈虧縮小 */
+.group-card .trade-table .money-value{
+ font-size:1.36em!important;text-align:center!important;
+ line-height:1.25;font-weight:900!important
+}
+
+/* 每組總盈虧維持1.56em */
+.group-card .group-total .money-value{font-size:1.56em!important}
+
+/* 頂部兩項加總放大 */
+#overall-floating,#overall-realized{
+ font-size:2.06em!important;font-weight:900!important;
+ line-height:1.25;text-align:center!important
+}
 
 @media(max-width:640px){
  body{font-size:14px}
@@ -186,11 +219,14 @@ input::-webkit-inner-spin-button,input::-webkit-outer-spin-button{-webkit-appear
  .stock-name{font-size:22px}
  .trade-input{min-width:85px}
  .group-card .trade-input.price-input{
-  min-width:81px!important;
-  width:90%!important
+  min-width:81px!important;width:90%!important
  }
  .lots-input{min-width:55px!important}
  .date-input{font-size:11.7px!important}
+ .date-wrap{min-width:115px!important;width:115px!important}
+ .group-title{font-size:15px}
+ .group-source{font-size:10px}
+ .group-refresh{padding:7px 8px!important;font-size:11px!important}
 }
 </style>
 </head>
@@ -202,7 +238,7 @@ input::-webkit-inner-spin-button,input::-webkit-outer-spin-button{-webkit-appear
   <div>
    <h1 class="text-2xl sm:text-3xl font-black tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-cyber-cyan via-white to-cyber-magenta">蜘蛛作戰法</h1>
    <p class="text-gray-400 text-xs mt-1">
-    SPIDER MATRIX 20 × 8 ・160 TRADE RECORDS ・<span id="last-update">--</span>
+    SPIDER MATRIX 20 × 8 ・<span id="last-update">--</span>
    </p>
   </div>
   <div class="flex items-center gap-2 flex-wrap justify-center">
@@ -225,22 +261,22 @@ input::-webkit-inner-spin-button,input::-webkit-outer-spin-button{-webkit-appear
 
 <main class="max-w-[120rem] mx-auto px-2 sm:px-4 py-4 w-full flex-grow">
 
-<section class="grid grid-cols-2 md:grid-cols-4 gap-2 mb-5">
- <div class="bg-cyber-card border border-cyber-border rounded-xl p-3">
-  <div class="text-gray-400 text-xs">交易組數</div>
-  <div class="text-cyan-300 text-2xl font-black">20</div>
+<section class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-5">
+ <div class="summary-card bg-cyber-card border border-green-500/50 rounded-xl p-4">
+  <div class="summary-title">
+   <i class="fa-solid fa-chart-line mr-2 text-green-400"></i>
+   加總浮動盈虧金額
+  </div>
+  <div id="overall-floating" class="summary-number profit-zero">--</div>
+  <div class="text-gray-500 text-xs mt-2">20組所有尚未賣出交易的浮動盈虧總和</div>
  </div>
- <div class="bg-cyber-card border border-cyber-border rounded-xl p-3">
-  <div class="text-gray-400 text-xs">每組交易筆數</div>
-  <div class="text-cyan-300 text-2xl font-black">8</div>
- </div>
- <div class="bg-cyber-card border border-cyber-border rounded-xl p-3">
-  <div class="text-gray-400 text-xs">全部交易紀錄</div>
-  <div class="text-cyan-300 text-2xl font-black">160</div>
- </div>
- <div class="bg-cyber-card border border-cyber-border rounded-xl p-3">
-  <div class="text-gray-400 text-xs">20組總盈虧</div>
-  <div id="overall-total" class="money-value text-gray-300">--</div>
+ <div class="summary-card bg-cyber-card border border-cyan-500/50 rounded-xl p-4">
+  <div class="summary-title">
+   <i class="fa-solid fa-calculator mr-2 text-cyan-300"></i>
+   加總全部買賣小計
+  </div>
+  <div id="overall-realized" class="summary-number profit-zero">--</div>
+  <div class="text-gray-500 text-xs mt-2">20組所有已完成買賣交易的盈虧總和</div>
  </div>
 </section>
 
@@ -261,10 +297,12 @@ input::-webkit-inner-spin-button,input::-webkit-outer-spin-button{-webkit-appear
   <p>5. 賣出金額＝賣出價格 × 賣出張數 × 1,000。</p>
   <p>6. 有賣出金額時顯示買賣盈虧小計，隱藏該筆浮動盈虧。</p>
   <p>7. 尚未賣出的交易，浮動盈虧＝（目前價格－買進價格）×買進張數×1,000。</p>
-  <p>8. 獲利浮動盈虧綠色背景，虧損浮動盈虧紅色背景。</p>
-  <p>9. 點選輸入欄位會清空原內容；未輸入新內容離開時會恢復原內容。</p>
-  <p>10. 金額字體1.56em，每組總盈虧置中，買進及賣出價格欄位縮小約10%。</p>
-  <p>11. 所有資料自動儲存在本機，每60秒更新行情。</p>
+  <p>8. 頂部加總浮動盈虧，只計算尚未賣出的交易。</p>
+  <p>9. 頂部加總全部買賣小計，只計算已完成買賣的交易。</p>
+  <p>10. 獲利綠色，虧損紅色，零盈虧灰色。</p>
+  <p>11. 點選輸入欄位會清空原內容；未輸入新內容離開時會恢復原內容。</p>
+  <p>12. 每筆金額及盈虧字體縮小0.2em，頂部兩項加總放大0.5em，每組總盈虧維持原大小。</p>
+  <p>13. 所有資料自動儲存在本機，每60秒更新行情。</p>
  </div>
 </section>
 </main>
@@ -334,7 +372,6 @@ function status(type,msg){
  text.textContent=msg;
 }
 
-/* 點選輸入欄位：清空；沒有輸入則恢復 */
 function inputFocus(el){
  if(el.dataset.editing==='1')return;
  el.dataset.original=el.value;
@@ -352,7 +389,6 @@ function inputRestore(el){
  return false;
 }
 
-/* 日期格式 */
 function normalizeDate(value){
  if(!value)return '';
  const s=String(value).trim().replace(/[.-]/g,'/');
@@ -391,16 +427,13 @@ function dateInput(i,row,type,value){
  </div>`;
 }
 
-/* 日曆按鈕及透明日期欄位均可觸發日期選擇 */
 function openDatePicker(id){
  const picker=document.getElementById(id);
  if(!picker)return;
  try{
   if(typeof picker.showPicker==='function')picker.showPicker();
   else picker.click();
- }catch(e){
-  picker.click();
- }
+ }catch(e){picker.click();}
 }
 document.addEventListener('click',function(e){
  const button=e.target.closest('.date-calendar');
@@ -431,7 +464,6 @@ function dateBlur(i,row,type,el){
  onTrade(i,row,type,'date',value);
 }
 
-/* 資料載入及儲存 */
 function normalizeTrade(t){
  t=t&&typeof t==='object'?t:{};
  return {
@@ -509,11 +541,24 @@ function calcGroup(group){
  });
  return {total:Math.round(total*100)/100,hasData};
 }
-function calcOverall(){
+function calcOverallFloating(){
  let total=0,hasData=false;
- groups.forEach(g=>{
-  const r=calcGroup(g);
-  if(r.hasData){total+=r.total;hasData=true}
+ groups.forEach(group=>{
+  group.trades.forEach(record=>{
+   if(calcRealized(record).hasData)return;
+   const r=calcFloating(record,group.latestPrice);
+   if(r.hasData){total+=r.total;hasData=true}
+  });
+ });
+ return {total:Math.round(total*100)/100,hasData};
+}
+function calcOverallRealized(){
+ let total=0,hasData=false;
+ groups.forEach(group=>{
+  group.trades.forEach(record=>{
+   const r=calcRealized(record);
+   if(r.hasData){total+=r.total;hasData=true}
+  });
  });
  return {total:Math.round(total*100)/100,hasData};
 }
@@ -650,7 +695,6 @@ async function getPrice(raw){
  return y?{...y,src:'Yahoo Finance'}:null;
 }
 
-/* API Key */
 function setKey(){
  const value=prompt('輸入 Twelve Data API Key（美股行情使用）。留空可清除：',localStorage.getItem('TD_KEY')||'');
  if(value===null)return;
@@ -659,7 +703,6 @@ function setKey(){
  fetchAll();
 }
 
-/* 行情更新 */
 function applyPrice(i,result){
  groups[i].latestPrice=Number(result.price);
  groups[i].name=result.name||groups[i].name;
@@ -713,7 +756,7 @@ async function onSymbol(i,value){
  const version=++requestVersion[i];
  groups[i].symbol=symbol;
  groups[i].name='';groups[i].src='';groups[i].latestPrice=null;
- save();updateGroupHeader(i);
+ save();updateGroupHeader(i);updateSummary();
  if(!symbol){render();return}
  status('RUN','查詢第'+(i+1)+'組 '+symbol);
  const result=await getPrice(symbol);
@@ -735,7 +778,7 @@ function onTrade(i,row,type,field,value){
  save();
  updateTradeRow(i,row);
  updateGroupTotal(i);
- updateOverall();
+ updateSummary();
 }
 function updateTradeRow(i,row){
  const group=groups[i],record=group.trades[row];
@@ -770,10 +813,19 @@ function updateGroupTotal(i){
  el.textContent=result.hasData?signed(result.total):'--';
  el.className='money-value '+profitClass(result.total);
 }
-function updateOverall(){
- const result=calcOverall(),el=document.getElementById('overall-total');
- el.textContent=result.hasData?signed(result.total):'--';
- el.className='money-value '+profitClass(result.total);
+function updateSummary(){
+ const floating=calcOverallFloating();
+ const realized=calcOverallRealized();
+ const floatEl=document.getElementById('overall-floating');
+ const realizedEl=document.getElementById('overall-realized');
+ if(floatEl){
+  floatEl.textContent=floating.hasData?signed(floating.total):'--';
+  floatEl.className='summary-number '+profitClass(floating.total);
+ }
+ if(realizedEl){
+  realizedEl.textContent=realized.hasData?signed(realized.total):'--';
+  realizedEl.className='summary-number '+profitClass(realized.total);
+ }
 }
 
 /* 輸入欄位 */
@@ -798,12 +850,23 @@ function renderGroup(i){
  let html=`
  <section class="group-card" id="group-card-${i}">
   <div class="group-head p-3">
-   <div class="flex items-center justify-between mb-2">
-    <div class="text-cyan-300 font-black text-lg">
-     <i class="fa-solid fa-spider mr-2"></i>第 ${i+1} 組
+
+   <!-- 組名、FinMind來源日期、更新按鈕 -->
+   <div class="group-title-row mb-3">
+    <div class="group-title text-cyan-300 font-black text-lg">
+     <i class="fa-solid fa-spider mr-1"></i>第 ${i+1} 組
     </div>
-    <div class="text-xs text-gray-400">8 筆交易紀錄</div>
+
+    <div id="source-${i}" class="group-source">
+     ${esc(g.src||'')}
+    </div>
+
+    <button onclick="refreshOne(${i})"
+     class="group-refresh px-3 py-2 rounded-lg border border-cyan-400 text-cyan-300 text-xs font-bold">
+     <i class="fa-solid fa-rotate-right mr-1"></i>更新本組
+    </button>
    </div>
+
    <div class="grid grid-cols-12 gap-2 items-center">
     <div class="col-span-7">
      <div class="small-label mb-1">本組股票／幣種代號</div>
@@ -819,17 +882,13 @@ function renderGroup(i){
      <div id="price-${i}" class="current-price text-center py-2">${fmt(g.latestPrice)}</div>
     </div>
    </div>
+
    <div class="mt-2">
     <div id="name-${i}" class="stock-name truncate">${esc(g.name||'尚未取得名稱')}</div>
-    <div class="flex items-center justify-between gap-2 mt-1">
-     <div id="source-${i}" class="text-xs text-gray-500 truncate">${esc(g.src)}</div>
-     <button onclick="refreshOne(${i})"
-      class="shrink-0 px-3 py-2 rounded-lg border border-cyan-400 text-cyan-300 text-xs font-bold">
-      <i class="fa-solid fa-rotate-right mr-1"></i>更新本組
-     </button>
-    </div>
    </div>
+
   </div>
+
   <div class="overflow-x-auto">
    <table class="trade-table">
     <thead><tr>
@@ -840,6 +899,7 @@ function renderGroup(i){
      <th>賣出金額</th><th>浮動盈虧</th><th>買賣小計</th>
     </tr></thead>
     <tbody>`;
+
  for(let row=0;row<TRADE_COUNT;row++){
   const record=g.trades[row];
   const buyAmount=calcAmount(record,'buy');
@@ -873,11 +933,13 @@ function renderGroup(i){
     }">${realized.hasData?signed(realized.total):''}</div></td>
    </tr>`;
  }
+
  const total=calcGroup(g);
  html+=`
     </tbody>
    </table>
   </div>
+
   <div class="group-total p-3 flex items-center justify-between">
    <div>
     <div class="text-cyan-300 font-bold text-sm">第 ${i+1} 組總盈虧</div>
@@ -890,6 +952,7 @@ function renderGroup(i){
  </section>`;
  return html;
 }
+
 function symbolBlur(i,el){
  if(inputRestore(el))return;
 }
@@ -905,7 +968,7 @@ function updateGroupHeader(i){
 function render(){
  document.getElementById('groups-container').innerHTML=
   groups.map((g,i)=>renderGroup(i)).join('');
- updateOverall();
+ updateSummary();
 }
 
 /* 啟動 */
