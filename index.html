@@ -19,16 +19,21 @@ purple:'#7000ff',magenta:'#ff007f',red:'#ff2e63',green:'#00ff66'
 
 <style>
 *{box-sizing:border-box}
+html{scroll-behavior:smooth}
+
 body{
  background:#030508 radial-gradient(circle at 50% 0%,rgba(112,0,255,.2),transparent 75%);
  color:#e2e8f0;min-height:100vh;font-size:15px
 }
+
 input{min-width:0}
 input:focus{outline:1px solid #00f0ff}
 button:active{transform:scale(.97)}
+
 ::-webkit-scrollbar{width:9px;height:9px}
 ::-webkit-scrollbar-track{background:#030508}
 ::-webkit-scrollbar-thumb{background:#1a2338;border-radius:5px}
+
 input[type=number]{appearance:textfield;-moz-appearance:textfield}
 input::-webkit-inner-spin-button,input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
 
@@ -38,50 +43,91 @@ input::-webkit-inner-spin-button,input::-webkit-outer-spin-button{-webkit-appear
  text-align:center;font-weight:900;font-size:22px;text-transform:uppercase
 }
 
-/* 交易表格：縮小每列上下空隙 */
-.trade-table{min-width:1100px;width:100%;border-collapse:collapse}
+/* 交易表格：依欄位實際寬度排列 */
+.trade-table{
+ min-width:0;
+ width:max-content;
+ max-width:none;
+ border-collapse:collapse;
+ table-layout:fixed;
+ margin:0;
+}
+
 .trade-table th,.trade-table td{
  border:1px solid rgba(26,35,56,.8);
- padding:3px 5px;text-align:center
+ padding:3px 2px;
+ text-align:center
 }
+
 .trade-table th{
  background:#101827;color:#9ca3af;font-size:15.6px;
- white-space:nowrap;font-weight:900;padding-top:4px;padding-bottom:4px
+ white-space:nowrap;font-weight:900;
+ padding-top:4px;padding-bottom:4px;
+ padding-left:2px;padding-right:2px
 }
-.trade-table td{font-size:18px;font-weight:700;line-height:1.15}
+
+.trade-table td{
+ font-size:18px;font-weight:700;line-height:1.15
+}
 
 .group-card{
- background:rgba(10,14,23,.96);border:1px solid #1a2338;
- border-radius:14px;overflow:hidden;box-shadow:0 8px 25px rgba(0,0,0,.3)
+ background:rgba(10,14,23,.96);
+ border:1px solid #1a2338;
+ border-radius:14px;
+ overflow:hidden;
+ box-shadow:0 8px 25px rgba(0,0,0,.3);
+ min-width:0;
 }
+
 .group-head{
  background:linear-gradient(110deg,rgba(0,240,255,.10),rgba(112,0,255,.12));
  border-bottom:1px solid rgba(0,240,255,.35)
 }
+
 .trade-input{
- width:100%;min-width:90px;background:#030508;border:1px solid #1a2338;
- border-radius:6px;padding:5px 5px;color:white;text-align:center;
+ width:100%;min-width:90px;
+ background:#030508;border:1px solid #1a2338;
+ border-radius:6px;padding:5px 3px;
+ color:white;text-align:center;
  font-size:18px;font-weight:700;line-height:1.15
 }
+
 .trade-input:focus{border-color:#00f0ff}
 
+/* 價格輸入欄 */
 .group-card .trade-input.price-input{
- width:90%;min-width:81px;margin-left:auto;margin-right:auto;
- padding:5px 2px;display:block
+ width:65px;min-width:65px;max-width:65px;
+ margin:0 auto;padding:5px 0;display:block
 }
+
+.trade-table th.price-heading,
+.trade-table td.price-cell{
+ width:72px!important;min-width:72px!important;
+ max-width:72px!important;
+ padding-left:0!important;padding-right:0!important;
+ overflow:hidden
+}
+
 .lots-cell{width:65px;min-width:65px;max-width:65px}
+
 .lots-input{
- width:55px!important;min-width:55px!important;max-width:55px!important;
- padding:5px 2px!important
+ width:55px!important;min-width:55px!important;
+ max-width:55px!important;padding:5px 2px!important
 }
+
 .group-card .trade-table td{font-size:1.3em}
 .group-card .trade-table th{font-size:1.05em}
 .group-card .trade-input{font-size:1.15em}
+
 .stock-name{
  font-size:24px;font-weight:900;color:#fff;
  line-height:1.2;letter-spacing:.5px
 }
-.current-price{font-size:25px;font-weight:900;color:#00ff66;line-height:1.15}
+
+.current-price{
+ font-size:25px;font-weight:900;
+ color:#00ff66;line-height:1.15
+}
 
 .group-total{
  background:rgba(112,0,255,.12);
@@ -89,6 +135,7 @@ input::-webkit-inner-spin-button,input::-webkit-outer-spin-button{-webkit-appear
  position:relative;min-height:60px;
  display:flex;align-items:center
 }
+
 .group-total .money-value{
  position:absolute;left:50%;top:50%;
  transform:translate(-50%,-50%);
@@ -102,27 +149,36 @@ input::-webkit-inner-spin-button,input::-webkit-outer-spin-button{-webkit-appear
 
 .float-positive{
  background:rgba(0,255,102,.20)!important;color:#00ff66!important;
- border:1px solid rgba(0,255,102,.65);border-radius:7px;padding:3px 3px;
+ border:1px solid rgba(0,255,102,.65);
+ border-radius:7px;padding:3px 3px;
  box-shadow:0 0 9px rgba(0,255,102,.18)
 }
+
 .float-negative{
  background:rgba(255,46,99,.22)!important;color:#ff6688!important;
- border:1px solid rgba(255,46,99,.7);border-radius:7px;padding:3px 3px;
+ border:1px solid rgba(255,46,99,.7);
+ border-radius:7px;padding:3px 3px;
  box-shadow:0 0 9px rgba(255,46,99,.18)
 }
+
 .float-zero{
  background:rgba(148,163,184,.12)!important;color:#cbd5e1!important;
- border:1px solid rgba(148,163,184,.3);border-radius:7px;padding:3px 3px
+ border:1px solid rgba(148,163,184,.3);
+ border-radius:7px;padding:3px 3px
 }
+
 .small-label{font-size:12px;color:#94a3b8}
 .amount-buy{color:#ff2e63;font-weight:900}
 .amount-sell{color:#00ff66;font-weight:900}
 
 .money-value{
  font-size:1.56em!important;
- line-height:1.15;font-weight:900!important;white-space:nowrap
+ line-height:1.15;font-weight:900!important;
+ white-space:nowrap
 }
+
 #overall-floating,#overall-realized{font-size:1.56em!important}
+
 .group-total .money-value{font-size:1.56em!important}
 .money-input{font-size:18px}
 
@@ -131,26 +187,31 @@ input::-webkit-inner-spin-button,input::-webkit-outer-spin-button{-webkit-appear
  justify-content:center;align-items:center;text-align:center;
  overflow:hidden
 }
+
 .summary-title{
- font-size:15px;font-weight:900;color:#94a3b8;margin-bottom:10px
+ font-size:15px;font-weight:900;
+ color:#94a3b8;margin-bottom:10px
 }
+
 .summary-number{
  font-size:clamp(22px,3.5vw,34px);
  font-weight:900;line-height:1.25;
  overflow-wrap:anywhere
 }
 
-/* 日期欄位 */
+/* 日期欄位基本設定 */
 .date-input{
  min-width:95px!important;width:100%;
  font-size:11.7px!important;font-weight:700;
  letter-spacing:0;padding:5px 0.1em!important;color:#cbd5e1
 }
+
 .date-wrap{
  display:flex;align-items:center;gap:2px;
  min-width:115px;width:115px;position:relative;
  justify-content:center;margin-left:auto;margin-right:auto
 }
+
 .date-calendar{
  flex:0 0 25px;width:25px;height:27px;
  background:#14243a;color:#00f0ff;
@@ -158,6 +219,7 @@ input::-webkit-inner-spin-button,input::-webkit-outer-spin-button{-webkit-appear
  font-size:12px;display:flex;align-items:center;justify-content:center;
  position:relative;z-index:1
 }
+
 .hidden-date-picker{
  position:absolute!important;right:0!important;top:0!important;
  width:25px!important;height:27px!important;
@@ -166,6 +228,7 @@ input::-webkit-inner-spin-button,input::-webkit-outer-spin-button{-webkit-appear
  margin:0!important;padding:0!important;border:0!important;
  -webkit-appearance:none;appearance:none
 }
+
 .date-heading{font-size:10px!important}
 
 /* 每組內容置中 */
@@ -180,33 +243,46 @@ input::-webkit-inner-spin-button,input::-webkit-outer-spin-button{-webkit-appear
 .group-card .group-total > div{
  text-align:center!important
 }
-.group-card input{text-align:center!important}
 
-/* 股票名稱靠左 */
+.group-card input{text-align:center!important}
 .group-card .stock-name{text-align:left!important}
 
-/* 標題、行情來源、更新按鈕排列 */
+/* 標題區 */
 .group-title-row{
  display:flex;align-items:center;justify-content:space-between;
  gap:8px;width:100%;flex-wrap:nowrap
 }
+
 .group-title{
  text-align:left!important;flex:0 0 auto;min-width:0;
  white-space:nowrap
 }
+
 .group-source{
  flex:1 1 auto;min-width:0;
  color:#94a3b8;font-size:11px;text-align:right!important;
  white-space:nowrap;overflow:hidden;text-overflow:ellipsis
 }
+
 .group-refresh{flex:0 0 auto;white-space:nowrap}
 
-/* 金額及盈虧字體維持原設定 */
+/* 盈虧金額 */
 .group-card .trade-table .money-value{
- font-size:1.36em!important;text-align:center!important;
+ font-size:1.36em!important;
+ text-align:center!important;
  line-height:1.15;font-weight:900!important
 }
+
+.group-card .trade-table .amount-buy,
+.group-card .trade-table .amount-sell{
+ font-size:1.16em!important;
+ line-height:1.15!important;
+ font-weight:900!important;
+ white-space:nowrap
+}
+
 .group-card .group-total .money-value{font-size:1.56em!important}
+
 #overall-floating,#overall-realized{
  font-size:2.06em!important;font-weight:900!important;
  line-height:1.25;text-align:center!important
@@ -221,21 +297,258 @@ input::-webkit-inner-spin-button,input::-webkit-outer-spin-button{-webkit-appear
 .group-card .group-total{padding:7px 10px!important}
 .group-card .group-total .text-gray-500{margin-top:2px!important}
 
+/* 交易欄位左右留白 */
+.group-card .trade-table th,
+.group-card .trade-table td{
+ padding-left:2px!important;
+ padding-right:2px!important
+}
+
+/* 日期欄位 */
+.group-card .date-wrap{
+ margin-left:0;margin-right:0
+}
+
+/* 回頂浮標 */
+#back-to-top{
+ position:fixed;right:13px;bottom:30px;z-index:9999;
+ width:48px;height:48px;border-radius:50%;
+ display:flex;align-items:center;justify-content:center;
+ background:linear-gradient(145deg,#00f0ff,#7000ff);
+ color:#fff;border:1px solid rgba(255,255,255,.35);
+ box-shadow:0 0 16px rgba(0,240,255,.4);
+ font-size:20px;cursor:pointer;
+ opacity:0;visibility:hidden;pointer-events:none;
+ transform:translateY(12px);
+ transition:opacity .25s,visibility .25s,transform .25s;
+ -webkit-tap-highlight-color:transparent
+}
+
+#back-to-top.show{
+ opacity:1;visibility:visible;pointer-events:auto;
+ transform:translateY(0)
+}
+
+#back-to-top:active{transform:scale(.90)}
+
 @media(max-width:640px){
  body{font-size:14px}
  .group-card{border-radius:10px}
  .stock-name{font-size:22px}
  .trade-input{min-width:85px;padding-top:5px;padding-bottom:5px}
+
  .group-card .trade-input.price-input{
-  min-width:81px!important;width:90%!important
+  width:65px!important;min-width:65px!important;
+  max-width:65px!important;
+  padding-left:0!important;padding-right:0!important
  }
+
  .lots-input{min-width:55px!important}
  .date-input{font-size:11.7px!important}
  .date-wrap{min-width:115px!important;width:115px!important}
  .group-title{font-size:15px}
  .group-source{font-size:10px}
  .group-refresh{padding:6px 8px!important;font-size:11px!important}
- .trade-table th,.trade-table td{padding-top:3px;padding-bottom:3px}
+
+ .trade-table th,.trade-table td{
+  padding-top:3px;padding-bottom:3px;
+  padding-left:2px;padding-right:2px
+ }
+
+ #back-to-top{
+  right:10px;bottom:24px;width:45px;height:45px;font-size:19px
+ }
+}
+
+/* 價格欄位最終縮窄設定 */
+.group-card .trade-table th.price-heading,
+.group-card .trade-table td.price-cell{
+ width:72px!important;min-width:72px!important;
+ max-width:72px!important;
+ padding-left:0!important;padding-right:0!important
+}
+
+.group-card .trade-table td.price-cell .price-input{
+ display:block!important;width:65px!important;
+ min-width:65px!important;max-width:65px!important;
+ margin:0 auto!important;padding-left:0!important;
+ padding-right:0!important;box-sizing:border-box!important
+}
+
+/* 浮動盈虧與買賣小計 */
+.group-card .trade-table .money-value[id^="floating-"],
+.group-card .trade-table .money-value[id^="subtotal-"]{
+ font-size:1.16em!important;
+ line-height:1.15!important;font-weight:900!important
+}
+
+/* ======================================
+   日期欄位：縮小日期格、靠左排列
+====================================== */
+
+.group-card .trade-table th.date-heading,
+.group-card .trade-table td.date-cell{
+ width:100px!important;
+ min-width:100px!important;
+ max-width:100px!important;
+ padding-left:0!important;
+ padding-right:0!important;
+ overflow:hidden!important;
+}
+
+.group-card .date-wrap{
+ display:flex!important;
+ width:98px!important;
+ min-width:98px!important;
+ max-width:98px!important;
+ margin:0!important;
+ padding:0!important;
+ gap:1px!important;
+ justify-content:flex-start!important;
+ align-items:center!important;
+}
+
+.group-card .date-input{
+ display:block!important;
+ flex:0 0 72px!important;
+ width:72px!important;
+ min-width:72px!important;
+ max-width:72px!important;
+ height:27px!important;
+ margin:0!important;
+ padding:2px 0!important;
+ font-size:9.9px!important;
+ letter-spacing:-.4px!important;
+ text-align:center!important;
+}
+
+.group-card .date-calendar{
+ flex:0 0 22px!important;
+ width:22px!important;
+ min-width:22px!important;
+ max-width:22px!important;
+ height:25px!important;
+ margin:0!important;
+ padding:0!important;
+ font-size:10px!important;
+}
+
+.group-card .hidden-date-picker{
+ position:absolute!important;
+ right:0!important;
+ top:0!important;
+ width:22px!important;
+ min-width:22px!important;
+ max-width:22px!important;
+ height:25px!important;
+ margin:0!important;
+ padding:0!important;
+}
+
+/* ======================================
+   20組交易格子：移除多餘空間，靠左排列
+====================================== */
+
+/* 每組表格不再強制撐到1100px */
+.group-card .overflow-x-auto{
+ display:flex!important;
+ justify-content:flex-start!important;
+ align-items:flex-start!important;
+ width:100%!important;
+ overflow-x:auto!important;
+ overflow-y:hidden!important;
+}
+
+/* 表格依欄位寬度排列，不留右側空白 */
+.group-card .trade-table{
+ width:max-content!important;
+ min-width:0!important;
+ max-width:none!important;
+ table-layout:fixed!important;
+ margin-left:0!important;
+ margin-right:0!important;
+ flex:0 0 auto!important;
+}
+
+/* 交易編號欄縮小 */
+.group-card .trade-table th:first-child,
+.group-card .trade-table td:first-child{
+ width:38px!important;
+ min-width:38px!important;
+ max-width:38px!important;
+ padding-left:1px!important;
+ padding-right:1px!important;
+}
+
+/* 買進、賣出日期欄 */
+.group-card .trade-table th.date-heading,
+.group-card .trade-table td.date-cell{
+ width:100px!important;
+ min-width:100px!important;
+ max-width:100px!important;
+}
+
+/* 買進、賣出價格欄 */
+.group-card .trade-table th.price-heading,
+.group-card .trade-table td.price-cell{
+ width:72px!important;
+ min-width:72px!important;
+ max-width:72px!important;
+}
+
+/* 張數欄 */
+.group-card .trade-table th.lots-cell,
+.group-card .trade-table td.lots-cell{
+ width:60px!important;
+ min-width:60px!important;
+ max-width:60px!important;
+ padding-left:0!important;
+ padding-right:0!important;
+}
+
+/* 金額及盈虧欄：減少左右空間 */
+.group-card .trade-table th:nth-child(5),
+.group-card .trade-table td:nth-child(5),
+.group-card .trade-table th:nth-child(9),
+.group-card .trade-table td:nth-child(9),
+.group-card .trade-table th:nth-child(10),
+.group-card .trade-table td:nth-child(10),
+.group-card .trade-table th:nth-child(11),
+.group-card .trade-table td:nth-child(11){
+ width:90px!important;
+ min-width:90px!important;
+ max-width:90px!important;
+ padding-left:1px!important;
+ padding-right:1px!important;
+}
+
+/* 手機版維持相同的緊湊排列 */
+@media(max-width:640px){
+ .group-card .trade-table{
+  width:max-content!important;
+  min-width:0!important;
+ }
+
+ .group-card .trade-table th,
+ .group-card .trade-table td{
+  padding-left:1px!important;
+  padding-right:1px!important;
+ }
+
+ .group-card .date-input{
+  width:72px!important;
+  min-width:72px!important;
+  max-width:72px!important;
+  flex:0 0 72px!important;
+  font-size:9.9px!important;
+ }
+
+ .group-card .date-calendar{
+  width:22px!important;
+  min-width:22px!important;
+  max-width:22px!important;
+  flex:0 0 22px!important;
+ }
 }
 </style>
 </head>
@@ -310,13 +623,18 @@ input::-webkit-inner-spin-button,input::-webkit-outer-spin-button{-webkit-appear
   <p>9. 頂部加總全部買賣小計，只計算已完成買賣的交易。</p>
   <p>10. 獲利綠色，虧損紅色，零盈虧灰色。</p>
   <p>11. 點選輸入欄位會清空原內容；未輸入新內容離開時會恢復原內容。</p>
-  <p>12. 交易列上下間距已縮小，讓每組8筆交易更緊湊。</p>
+  <p>12. 交易列上下間距已縮小，左右空間亦已縮減。</p>
   <p>13. 所有資料自動儲存在本機，每60秒更新行情。</p>
+  <p>14. 捲頁後右側會出現回頂按鈕，點擊即可返回最上方。</p>
  </div>
 </section>
 </main>
 
 <footer class="text-center text-gray-600 text-xs mt-6">Spider Matrix 20 × 8 © 2026</footer>
+
+<button id="back-to-top" type="button" aria-label="回到最上方" title="回到最上方">
+ <i class="fa-solid fa-arrow-up"></i>
+</button>
 
 <script>
 'use strict';
@@ -342,10 +660,13 @@ function esc(s){
  '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
  }[c]));
 }
+
 function isBlank(v){return v===''||v===null||v===undefined}
+
 function validPositive(v){
  return !isBlank(v)&&Number.isFinite(Number(v))&&Number(v)>0;
 }
+
 function fmt(n){
  if(!validPositive(n))return '--';
  n=Number(n);
@@ -355,17 +676,21 @@ function fmt(n){
  if(n>=1)return n.toFixed(3);
  return Number(n.toPrecision(4)).toString();
 }
+
 function money(n){
  return Number(n).toLocaleString('en-US',{maximumFractionDigits:2});
 }
+
 function signed(n){
  n=Number(n);
  const s=Math.abs(n).toLocaleString('en-US',{maximumFractionDigits:2});
  return n>0?'+'+s:n<0?'-'+s:'0';
 }
+
 function profitClass(n){
  return n>0?'profit-positive':n<0?'profit-negative':'profit-zero';
 }
+
 function status(type,msg){
  const dot=document.getElementById('dot');
  const text=document.getElementById('stext');
@@ -387,6 +712,7 @@ function inputFocus(el){
  el.dataset.editing='1';
  el.value='';
 }
+
 function inputRestore(el){
  if(el.dataset.editing!=='1')return false;
  if(el.value.trim()===''){
@@ -405,11 +731,13 @@ function normalizeDate(value){
  if(!m)return s;
  return `${m[1]}/${String(m[2]).padStart(2,'0')}/${String(m[3]).padStart(2,'0')}`;
 }
+
 function dateToISO(value){
  const v=normalizeDate(value);
  const m=v.match(/^(\d{4})\/(\d{2})\/(\d{2})$/);
  return m?`${m[1]}-${m[2]}-${m[3]}`:'';
 }
+
 function isoToDate(value){
  if(!value)return '';
  const m=value.match(/^(\d{4})-(\d{2})-(\d{2})$/);
@@ -444,6 +772,7 @@ function openDatePicker(id){
   else picker.click();
  }catch(e){picker.click();}
 }
+
 document.addEventListener('click',function(e){
  const button=e.target.closest('.date-calendar');
  if(!button)return;
@@ -461,6 +790,7 @@ function datePicked(i,row,type,value){
  }
  onTrade(i,row,type,'date',formatted);
 }
+
 function dateBlur(i,row,type,el){
  if(inputRestore(el)){
   onTrade(i,row,type,'date',el.value);
@@ -482,14 +812,17 @@ function normalizeTrade(t){
   amount:t.amount??''
  };
 }
+
 function normalizeRecord(r){
  r=r&&typeof r==='object'?r:{};
  return {buy:normalizeTrade(r.buy),sell:normalizeTrade(r.sell)};
 }
+
 function save(){
  try{localStorage.setItem(KEY,JSON.stringify(groups))}
  catch(e){console.error('儲存失敗',e);status('ERR','儲存空間不足')}
 }
+
 function load(){
  let saved=null;
  try{saved=JSON.parse(localStorage.getItem(KEY)||'null')}catch(e){}
@@ -507,6 +840,7 @@ function load(){
   };
  });
 }
+
 function resetAll(){
  if(!confirm('確定清除全部20組、160筆交易資料及代號嗎？此動作無法復原。'))return;
  requestVersion=requestVersion.map(v=>v+1);
@@ -522,12 +856,14 @@ function calcAmount(record,type){
  const total=Math.round(p*lots*1000*100)/100;
  return type==='buy'?-total:total;
 }
+
 function calcRealized(record){
  const buy=calcAmount(record,'buy');
  const sell=calcAmount(record,'sell');
  if(sell===null)return {hasData:false,total:0};
  return {hasData:true,total:Math.round((sell+(buy||0))*100)/100};
 }
+
 function calcFloating(record,current){
  const buy=record.buy,p=Number(buy.price),lots=Number(buy.lots),cp=Number(current);
  if(isBlank(buy.price)||isBlank(buy.lots)||!Number.isFinite(p)||
@@ -536,12 +872,14 @@ function calcFloating(record,current){
  }
  return {hasData:true,total:Math.round((cp-p)*lots*1000*100)/100};
 }
+
 function calcRecord(record,current){
  const realized=calcRealized(record);
  if(realized.hasData)return {type:'realized',hasData:true,total:realized.total};
  const floating=calcFloating(record,current);
  return {type:'floating',hasData:floating.hasData,total:floating.total};
 }
+
 function calcGroup(group){
  let total=0,hasData=false;
  group.trades.forEach(record=>{
@@ -550,6 +888,7 @@ function calcGroup(group){
  });
  return {total:Math.round(total*100)/100,hasData};
 }
+
 function calcOverallFloating(){
  let total=0,hasData=false;
  groups.forEach(group=>{
@@ -561,6 +900,7 @@ function calcOverallFloating(){
  });
  return {total:Math.round(total*100)/100,hasData};
 }
+
 function calcOverallRealized(){
  let total=0,hasData=false;
  groups.forEach(group=>{
@@ -580,6 +920,7 @@ const PROXIES=[
  u=>'https://api.codetabs.com/v1/proxy?quest='+encodeURIComponent(u),
  u=>'https://r.jina.ai/'+u
 ];
+
 async function fetchJSON(url){
  for(const proxy of PROXIES){
   const controller=new AbortController();
@@ -600,6 +941,7 @@ async function fetchJSON(url){
  }
  return null;
 }
+
 async function yahoo(sym){
  for(const host of ['query1','query2']){
   const data=await fetchJSON(
@@ -615,16 +957,21 @@ async function yahoo(sym){
  }
  return null;
 }
+
 let twseCache=null,tpexCache=null;
+
 async function getTWSE(){
  if(!twseCache)twseCache=fetchJSON('https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL');
  return twseCache;
 }
+
 async function getTPEX(){
  if(!tpexCache)tpexCache=fetchJSON('https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_close_quotes');
  return tpexCache;
 }
+
 function parseNum(v){return parseFloat(String(v??'').replace(/,/g,''))}
+
 async function openAPI(code){
  const twse=await getTWSE();
  if(Array.isArray(twse)){
@@ -644,6 +991,7 @@ async function openAPI(code){
  }
  return null;
 }
+
 async function finmind(code){
  const start=new Date(Date.now()-20*86400000).toISOString().slice(0,10);
  try{
@@ -661,6 +1009,7 @@ async function finmind(code){
   return {name,price:Number(last.close),src:'FinMind '+last.date};
  }catch(e){return null}
 }
+
 async function twStock(code){
  const f=await finmind(code);
  if(f)return f;
@@ -671,6 +1020,7 @@ async function twStock(code){
  }
  return open;
 }
+
 async function cryptoPrice(symbol){
  const base=symbol.replace(/(USDT|-USD)$/,'');
  for(const host of ['api.binance.com','data-api.binance.vision']){
@@ -685,6 +1035,7 @@ async function cryptoPrice(symbol){
  const y=await yahoo(base+'-USD');
  return y?{...y,src:'Yahoo Finance'}:null;
 }
+
 async function getPrice(raw){
  const symbol=String(raw||'').trim().toUpperCase();
  if(!symbol)return null;
@@ -717,6 +1068,7 @@ function applyPrice(i,result){
  groups[i].name=result.name||groups[i].name;
  groups[i].src=result.src||'';
 }
+
 async function refreshOne(i){
  const symbol=groups[i].symbol;
  if(!symbol)return;
@@ -730,6 +1082,7 @@ async function refreshOne(i){
  }else status('WARN','第'+(i+1)+'組 '+symbol+' 查價失敗');
  save();render();
 }
+
 async function fetchAll(){
  requestVersion=requestVersion.map(v=>v+1);
  const versions=requestVersion.slice();
@@ -753,6 +1106,7 @@ async function fetchAll(){
  if(failed.length)status(success?'WARN':'ERR',success+' 組成功，'+failed.length+' 組失敗');
  else status('OK','行情更新 '+time);
 }
+
 async function onSymbol(i,value){
  const symbol=String(value||'').trim().toUpperCase().replace(/[^A-Z0-9.\-]/g,'');
  const input=document.getElementById('symbol-'+i);
@@ -789,6 +1143,7 @@ function onTrade(i,row,type,field,value){
  updateGroupTotal(i);
  updateSummary();
 }
+
 function updateTradeRow(i,row){
  const group=groups[i],record=group.trades[row];
  ['buy','sell'].forEach(type=>{
@@ -815,6 +1170,7 @@ function updateTradeRow(i,row){
   );
  }
 }
+
 function updateGroupTotal(i){
  const el=document.getElementById('group-total-'+i);
  if(!el)return;
@@ -822,6 +1178,7 @@ function updateGroupTotal(i){
  el.textContent=result.hasData?signed(result.total):'--';
  el.className='money-value '+profitClass(result.total);
 }
+
 function updateSummary(){
  const floating=calcOverallFloating();
  const realized=calcOverallRealized();
@@ -849,6 +1206,7 @@ function tradeInput(i,row,type,field,value,placeholder){
   oninput="onTrade(${i},${row},'${type}','${field}',this.value)">
  `;
 }
+
 function tradeBlur(i,row,type,field,el){
  if(inputRestore(el))onTrade(i,row,type,field,el.value);
 }
@@ -896,9 +1254,9 @@ function renderGroup(i){
    <table class="trade-table">
     <thead><tr>
      <th>交易</th><th class="date-heading">買進日期</th>
-     <th>買進價格</th><th class="lots-cell">買進張數</th>
+     <th class="price-heading">買進價格</th><th class="lots-cell">買進張數</th>
      <th>買進金額</th><th class="date-heading">賣出日期</th>
-     <th>賣出價格</th><th class="lots-cell">賣出張數</th>
+     <th class="price-heading">賣出價格</th><th class="lots-cell">賣出張數</th>
      <th>賣出金額</th><th>浮動盈虧</th><th>買賣小計</th>
     </tr></thead>
     <tbody>`;
@@ -916,14 +1274,22 @@ function renderGroup(i){
   html+=`
    <tr>
     <td class="text-cyan-300 font-black whitespace-nowrap">#${row+1}</td>
-    <td>${tradeInput(i,row,'buy','date',record.buy.date)}</td>
-    <td>${tradeInput(i,row,'buy','price',record.buy.price,'買進價')}</td>
+
+    <td class="date-cell">
+     ${tradeInput(i,row,'buy','date',record.buy.date)}
+    </td>
+
+    <td class="price-cell">${tradeInput(i,row,'buy','price',record.buy.price,'買進價')}</td>
     <td class="lots-cell">${tradeInput(i,row,'buy','lots',record.buy.lots,'張數')}</td>
     <td><div id="buy-amount-${i}-${row}" class="amount-buy money-value">
      ${buyAmount===null?'--':money(Math.abs(buyAmount))}
     </div></td>
-    <td>${tradeInput(i,row,'sell','date',record.sell.date)}</td>
-    <td>${tradeInput(i,row,'sell','price',record.sell.price,'賣出價')}</td>
+
+    <td class="date-cell">
+     ${tradeInput(i,row,'sell','date',record.sell.date)}
+    </td>
+
+    <td class="price-cell">${tradeInput(i,row,'sell','price',record.sell.price,'賣出價')}</td>
     <td class="lots-cell">${tradeInput(i,row,'sell','lots',record.sell.lots,'張數')}</td>
     <td><div id="sell-amount-${i}-${row}" class="amount-sell money-value">
      ${sellAmount===null?'--':money(Math.abs(sellAmount))}
@@ -959,6 +1325,7 @@ function renderGroup(i){
 function symbolBlur(i,el){
  if(inputRestore(el))return;
 }
+
 function updateGroupHeader(i){
  const g=groups[i];
  const price=document.getElementById('price-'+i);
@@ -968,16 +1335,40 @@ function updateGroupHeader(i){
  if(name)name.textContent=g.name||'尚未取得名稱';
  if(source)source.textContent=g.src||'';
 }
+
 function render(){
  document.getElementById('groups-container').innerHTML=
   groups.map((g,i)=>renderGroup(i)).join('');
  updateSummary();
 }
 
+/* 右側浮標 */
+function initBackToTop(){
+ const button=document.getElementById('back-to-top');
+ if(!button)return;
+
+ function checkScroll(){
+  if(window.scrollY>250){
+   button.classList.add('show');
+  }else{
+   button.classList.remove('show');
+  }
+ }
+
+ window.addEventListener('scroll',checkScroll,{passive:true});
+
+ button.addEventListener('click',function(){
+  window.scrollTo({top:0,behavior:'smooth'});
+ });
+
+ checkScroll();
+}
+
 /* 啟動 */
 window.onload=()=>{
  load();
  render();
+ initBackToTop();
  fetchAll();
  setInterval(fetchAll,60000);
 };
