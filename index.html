@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="zh-TW" class="dark">
 <head>
@@ -33,18 +34,22 @@ input::-webkit-inner-spin-button,input::-webkit-outer-spin-button{-webkit-appear
 
 .symbol-input{
  width:100%;background:#030508;border:2px solid #00f0ff;
- border-radius:8px;padding:10px 8px;color:#00f0ff;
+ border-radius:8px;padding:7px 8px;color:#00f0ff;
  text-align:center;font-weight:900;font-size:22px;text-transform:uppercase
 }
+
+/* 交易表格：縮小每列上下空隙 */
 .trade-table{min-width:1100px;width:100%;border-collapse:collapse}
 .trade-table th,.trade-table td{
- border:1px solid rgba(26,35,56,.8);padding:8px 6px;text-align:center
+ border:1px solid rgba(26,35,56,.8);
+ padding:3px 5px;text-align:center
 }
 .trade-table th{
  background:#101827;color:#9ca3af;font-size:15.6px;
- white-space:nowrap;font-weight:900
+ white-space:nowrap;font-weight:900;padding-top:4px;padding-bottom:4px
 }
-.trade-table td{font-size:18px;font-weight:700}
+.trade-table td{font-size:18px;font-weight:700;line-height:1.15}
+
 .group-card{
  background:rgba(10,14,23,.96);border:1px solid #1a2338;
  border-radius:14px;overflow:hidden;box-shadow:0 8px 25px rgba(0,0,0,.3)
@@ -55,33 +60,33 @@ input::-webkit-inner-spin-button,input::-webkit-outer-spin-button{-webkit-appear
 }
 .trade-input{
  width:100%;min-width:90px;background:#030508;border:1px solid #1a2338;
- border-radius:6px;padding:10px 5px;color:white;text-align:center;
- font-size:18px;font-weight:700
+ border-radius:6px;padding:5px 5px;color:white;text-align:center;
+ font-size:18px;font-weight:700;line-height:1.15
 }
 .trade-input:focus{border-color:#00f0ff}
 
 .group-card .trade-input.price-input{
  width:90%;min-width:81px;margin-left:auto;margin-right:auto;
- padding-left:2px;padding-right:2px;display:block
+ padding:5px 2px;display:block
 }
 .lots-cell{width:65px;min-width:65px;max-width:65px}
 .lots-input{
  width:55px!important;min-width:55px!important;max-width:55px!important;
- padding-left:2px!important;padding-right:2px!important
+ padding:5px 2px!important
 }
 .group-card .trade-table td{font-size:1.3em}
 .group-card .trade-table th{font-size:1.05em}
 .group-card .trade-input{font-size:1.15em}
 .stock-name{
  font-size:24px;font-weight:900;color:#fff;
- line-height:1.35;letter-spacing:.5px
+ line-height:1.2;letter-spacing:.5px
 }
-.current-price{font-size:25px;font-weight:900;color:#00ff66}
+.current-price{font-size:25px;font-weight:900;color:#00ff66;line-height:1.15}
 
 .group-total{
  background:rgba(112,0,255,.12);
  border-top:2px solid rgba(0,240,255,.5);
- position:relative;min-height:76px;
+ position:relative;min-height:60px;
  display:flex;align-items:center
 }
 .group-total .money-value{
@@ -97,17 +102,17 @@ input::-webkit-inner-spin-button,input::-webkit-outer-spin-button{-webkit-appear
 
 .float-positive{
  background:rgba(0,255,102,.20)!important;color:#00ff66!important;
- border:1px solid rgba(0,255,102,.65);border-radius:7px;padding:7px 3px;
+ border:1px solid rgba(0,255,102,.65);border-radius:7px;padding:3px 3px;
  box-shadow:0 0 9px rgba(0,255,102,.18)
 }
 .float-negative{
  background:rgba(255,46,99,.22)!important;color:#ff6688!important;
- border:1px solid rgba(255,46,99,.7);border-radius:7px;padding:7px 3px;
+ border:1px solid rgba(255,46,99,.7);border-radius:7px;padding:3px 3px;
  box-shadow:0 0 9px rgba(255,46,99,.18)
 }
 .float-zero{
  background:rgba(148,163,184,.12)!important;color:#cbd5e1!important;
- border:1px solid rgba(148,163,184,.3);border-radius:7px;padding:7px 3px
+ border:1px solid rgba(148,163,184,.3);border-radius:7px;padding:3px 3px
 }
 .small-label{font-size:12px;color:#94a3b8}
 .amount-buy{color:#ff2e63;font-weight:900}
@@ -115,7 +120,7 @@ input::-webkit-inner-spin-button,input::-webkit-outer-spin-button{-webkit-appear
 
 .money-value{
  font-size:1.56em!important;
- line-height:1.25;font-weight:900!important;white-space:nowrap
+ line-height:1.15;font-weight:900!important;white-space:nowrap
 }
 #overall-floating,#overall-realized{font-size:1.56em!important}
 .group-total .money-value{font-size:1.56em!important}
@@ -135,11 +140,11 @@ input::-webkit-inner-spin-button,input::-webkit-outer-spin-button{-webkit-appear
  overflow-wrap:anywhere
 }
 
-/* 日期欄位縮小 */
+/* 日期欄位 */
 .date-input{
  min-width:95px!important;width:100%;
  font-size:11.7px!important;font-weight:700;
- letter-spacing:0;padding:10px 0.1em!important;color:#cbd5e1
+ letter-spacing:0;padding:5px 0.1em!important;color:#cbd5e1
 }
 .date-wrap{
  display:flex;align-items:center;gap:2px;
@@ -147,7 +152,7 @@ input::-webkit-inner-spin-button,input::-webkit-outer-spin-button{-webkit-appear
  justify-content:center;margin-left:auto;margin-right:auto
 }
 .date-calendar{
- flex:0 0 25px;width:25px;height:34px;
+ flex:0 0 25px;width:25px;height:27px;
  background:#14243a;color:#00f0ff;
  border:1px solid #1a2338;border-radius:5px;
  font-size:12px;display:flex;align-items:center;justify-content:center;
@@ -155,7 +160,7 @@ input::-webkit-inner-spin-button,input::-webkit-outer-spin-button{-webkit-appear
 }
 .hidden-date-picker{
  position:absolute!important;right:0!important;top:0!important;
- width:25px!important;height:34px!important;
+ width:25px!important;height:27px!important;
  opacity:0!important;z-index:5!important;
  pointer-events:auto!important;cursor:pointer!important;
  margin:0!important;padding:0!important;border:0!important;
@@ -194,30 +199,33 @@ input::-webkit-inner-spin-button,input::-webkit-outer-spin-button{-webkit-appear
  color:#94a3b8;font-size:11px;text-align:right!important;
  white-space:nowrap;overflow:hidden;text-overflow:ellipsis
 }
-.group-refresh{
- flex:0 0 auto;white-space:nowrap
-}
+.group-refresh{flex:0 0 auto;white-space:nowrap}
 
-/* 每筆金額及盈虧縮小 */
+/* 金額及盈虧字體維持原設定 */
 .group-card .trade-table .money-value{
  font-size:1.36em!important;text-align:center!important;
- line-height:1.25;font-weight:900!important
+ line-height:1.15;font-weight:900!important
 }
-
-/* 每組總盈虧維持1.56em */
 .group-card .group-total .money-value{font-size:1.56em!important}
-
-/* 頂部兩項加總放大 */
 #overall-floating,#overall-realized{
  font-size:2.06em!important;font-weight:900!important;
  line-height:1.25;text-align:center!important
 }
 
+/* 標題區縮小 */
+.group-card .group-head{padding:8px!important}
+.group-card .group-title-row{margin-bottom:7px!important}
+.group-card .group-head .grid{gap:6px!important}
+.group-card .group-head .small-label{margin-bottom:2px!important}
+.group-card .group-head .mt-2{margin-top:5px!important}
+.group-card .group-total{padding:7px 10px!important}
+.group-card .group-total .text-gray-500{margin-top:2px!important}
+
 @media(max-width:640px){
  body{font-size:14px}
  .group-card{border-radius:10px}
  .stock-name{font-size:22px}
- .trade-input{min-width:85px}
+ .trade-input{min-width:85px;padding-top:5px;padding-bottom:5px}
  .group-card .trade-input.price-input{
   min-width:81px!important;width:90%!important
  }
@@ -226,7 +234,8 @@ input::-webkit-inner-spin-button,input::-webkit-outer-spin-button{-webkit-appear
  .date-wrap{min-width:115px!important;width:115px!important}
  .group-title{font-size:15px}
  .group-source{font-size:10px}
- .group-refresh{padding:7px 8px!important;font-size:11px!important}
+ .group-refresh{padding:6px 8px!important;font-size:11px!important}
+ .trade-table th,.trade-table td{padding-top:3px;padding-bottom:3px}
 }
 </style>
 </head>
@@ -301,7 +310,7 @@ input::-webkit-inner-spin-button,input::-webkit-outer-spin-button{-webkit-appear
   <p>9. 頂部加總全部買賣小計，只計算已完成買賣的交易。</p>
   <p>10. 獲利綠色，虧損紅色，零盈虧灰色。</p>
   <p>11. 點選輸入欄位會清空原內容；未輸入新內容離開時會恢復原內容。</p>
-  <p>12. 每筆金額及盈虧字體縮小0.2em，頂部兩項加總放大0.5em，每組總盈虧維持原大小。</p>
+  <p>12. 交易列上下間距已縮小，讓每組8筆交易更緊湊。</p>
   <p>13. 所有資料自動儲存在本機，每60秒更新行情。</p>
  </div>
 </section>
@@ -851,16 +860,11 @@ function renderGroup(i){
  <section class="group-card" id="group-card-${i}">
   <div class="group-head p-3">
 
-   <!-- 組名、FinMind來源日期、更新按鈕 -->
    <div class="group-title-row mb-3">
     <div class="group-title text-cyan-300 font-black text-lg">
      <i class="fa-solid fa-spider mr-1"></i>第 ${i+1} 組
     </div>
-
-    <div id="source-${i}" class="group-source">
-     ${esc(g.src||'')}
-    </div>
-
+    <div id="source-${i}" class="group-source">${esc(g.src||'')}</div>
     <button onclick="refreshOne(${i})"
      class="group-refresh px-3 py-2 rounded-lg border border-cyan-400 text-cyan-300 text-xs font-bold">
      <i class="fa-solid fa-rotate-right mr-1"></i>更新本組
@@ -879,14 +883,13 @@ function renderGroup(i){
     </div>
     <div class="col-span-5">
      <div class="small-label mb-1">目前價格</div>
-     <div id="price-${i}" class="current-price text-center py-2">${fmt(g.latestPrice)}</div>
+     <div id="price-${i}" class="current-price text-center py-1">${fmt(g.latestPrice)}</div>
     </div>
    </div>
 
    <div class="mt-2">
     <div id="name-${i}" class="stock-name truncate">${esc(g.name||'尚未取得名稱')}</div>
    </div>
-
   </div>
 
   <div class="overflow-x-auto">
